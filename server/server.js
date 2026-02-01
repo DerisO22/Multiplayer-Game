@@ -18,6 +18,15 @@ const game = new Game(io);
 
 app.set('port', PORT);
 
+setInterval(() => {
+    console.log("Running Game Server");
+
+    if (game) {
+        game.update();
+        game.sendState();
+    }
+}, FRAME_TIME);
+
 server.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
 })
