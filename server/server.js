@@ -1,19 +1,19 @@
 import http from 'http';
-import express from 'express'
-import socketIO from 'socket.io';
+import express from 'express';
+import { Server } from 'socket.io';
 import dotenv from 'dotenv';
-import cors from 'cors'
+import cors from 'cors';
 
 dotenv.config();
 
-import { Game } from './classes/Game';
+import { Game } from './classes/Game.js';
 
 const PORT = process.env.PORT || 3001;
 const FRAME_TIME = Math.floor(1000 / 60);
 
 const app = express();
 const server = http.Server(app);
-const io = socketIO(server, { 
+const io = new Server(server, { 
     pingInterval: 1000,
     cors: {
         origin: "http://localhost:5173",

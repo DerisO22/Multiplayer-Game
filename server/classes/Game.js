@@ -1,4 +1,4 @@
-import { Player } from "./Player";
+import { Player } from "./Player.js";
 
 export class Game {
     constructor(io) {
@@ -29,13 +29,22 @@ export class Game {
             if (player) player.update();
         });
     }
+
+    getGameState() {
+        let players = Object.entries(this.players).map(([id, player]) => {
+            return {
+                id: id,
+                ...player.getDrawInfo()
+            }
+        })
+
+        return {
+            players
+        }
+    }
     
     sendState() {
-        let players = Object.values(this.players).map((player) => {
-            return player.getDrawInfo();
-        });
-        this.io.sockets.emit("sendState", {
-            players: players,
-        });
+        const state = this.getGameState();
+        this.io.sockets.emit("sendState", state);
     }
 }
