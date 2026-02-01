@@ -1,8 +1,8 @@
 import http from 'http';
 import express from 'express'
-import path from 'path';
 import socketIO from 'socket.io';
 import dotenv from 'dotenv';
+import cors from 'cors'
 
 dotenv.config();
 
@@ -13,10 +13,22 @@ const FRAME_TIME = Math.floor(1000 / 60);
 
 const app = express();
 const server = http.Server(app);
-const io = socketIO(server, { pingInterval: 1000 });
+const io = socketIO(server, { 
+    pingInterval: 1000,
+    cors: {
+        origin: "http://localhost:5173",
+        methods: ["GET", "POST"],
+        credentials: true
+    }
+});
 const game = new Game(io);
 
 app.set('port', PORT);
+
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+}))
 
 setInterval(() => {
     console.log("Running Game Server");
