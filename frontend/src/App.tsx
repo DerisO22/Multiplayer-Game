@@ -1,6 +1,6 @@
 import { OrbitControls } from '@react-three/drei';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Vector3 } from 'three';
 import { useSocket } from './utils/custom_hooks/useSocket';
 import { useKeyboardControls } from './utils/custom_hooks/useKeyboardControls';
@@ -31,11 +31,15 @@ function App() {
     const socket = useSocket();
     const gameState = useGameState(socket);
     useKeyboardControls(socket);
-    const [cameraMode, setCameraMode] = useState<'follow' | 'orbit'>('orbit');
+    const [cameraMode, setCameraMode] = useState<'follow' | 'orbit'>('follow');
 
     // Find local player
     const localPlayer = gameState.players.find(player => player.id === socket?.id);
     const localPlayerPosition = localPlayer?.position || null;
+
+    useEffect(() => {
+        setCameraMode('follow')
+    }, []);
 
     return (
         <div style={{ width: '100vw', height: '100vh' }}>
