@@ -20,7 +20,7 @@ export interface Position {
 }
 
 export interface ButtonInput {
-    button: 'up' | 'down' | 'left' | 'right';
+    button: 'forward' | 'backward' | 'left' | 'right';
     value: boolean;
 }
 

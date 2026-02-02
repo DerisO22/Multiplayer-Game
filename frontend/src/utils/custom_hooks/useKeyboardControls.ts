@@ -3,8 +3,8 @@ import { Socket } from 'socket.io-client';
 import type { KeyBindings } from '../types/controlType';
 
 const DEFAULT_KEYS: KeyBindings = {
-    up: 'w',
-    down: 's',
+    forward: 'w',
+    backward: 's',
     left: 'a',
     right: 'd',
 };
@@ -28,8 +28,8 @@ export const useKeyboardControls = (socket: Socket | null, keys: KeyBindings = D
                 pressedKeys.current.add(key);
 
                 // Send button press to server
-                if (key === keys.up) socket.emit('setButton', { button: 'up', value: true });
-                if (key === keys.down) socket.emit('setButton', { button: 'down', value: true });
+                if (key === keys.forward) socket.emit('setButton', { button: 'forward', value: true });
+                if (key === keys.backward) socket.emit('setButton', { button: 'backward', value: true });
                 if (key === keys.left) socket.emit('setButton', { button: 'left', value: true });
                 if (key === keys.right) socket.emit('setButton', { button: 'right', value: true });
             }
@@ -40,8 +40,8 @@ export const useKeyboardControls = (socket: Socket | null, keys: KeyBindings = D
             pressedKeys.current.delete(key);
 
             // Send button release to server
-            if (key === keys.up) socket.emit('setButton', { button: 'up', value: false });
-            if (key === keys.down) socket.emit('setButton', { button: 'down', value: false });
+            if (key === keys.forward) socket.emit('setButton', { button: 'forward', value: false });
+            if (key === keys.backward) socket.emit('setButton', { button: 'backward', value: false });
             if (key === keys.left) socket.emit('setButton', { button: 'left', value: false });
             if (key === keys.right) socket.emit('setButton', { button: 'right', value: false });
         };

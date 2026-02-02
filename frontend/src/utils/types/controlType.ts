@@ -1,6 +1,6 @@
 export interface KeyBindings {
-    up: string;
-    down: string;
+    forward: string;
+    backward: string;
     left: string;
     right: string;
 }
