@@ -6,7 +6,7 @@ export class Player {
         this.io = io;
         this.position = {x: 0, y: 0, z: 0};
         this.movespeed = {x: 0.1, y: 0.1, z: 0.1};
-        this.nickname = io;
+        this.nickname = `Player_${io.substring(0, 4)}`;
         /**
          * Current Keyboard Inputs
          */

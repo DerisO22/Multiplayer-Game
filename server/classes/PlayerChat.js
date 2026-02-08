@@ -8,6 +8,7 @@
  *  "/leave"    - disconnects the player
  * 
  */
+import { HelpCommandMessage } from "../utils/consts";
 
 export class PlayerChat {
     constructor (player, io) {
@@ -67,7 +68,12 @@ export class PlayerChat {
      *  Command Handler Functions
      */
     handle_help_command() {
+        const helper_message = {
+            text: HelpCommandMessage,
+            time: Date.now(),
+        }
 
+        this.player.socket.emit("help_command", helper_message);
     }
 
     /**
@@ -80,14 +86,14 @@ export class PlayerChat {
 
         const targets = targetString.split(',').map((username) => username.trim());
 
-        const targetPlayers = targets.map((target, index) => {
-            Object.keys(this.player.game.players)
-            .find(p => p.nickname === target[index])
-        })
+        const targetPlayers = targets.map((targetName) => {
+            return Object.keys(this.player.game.players)
+            .find(p => p.nickname === targetName)
+        }).filter(p => p);
 
         if(targetPlayers) {
             targetPlayers.map((target) => {
-                target.io.emit("whisper", {
+                target.io.emit("whisper_command", {
                     from: this.player.nickname,
                     message: message
                 });
@@ -100,16 +106,20 @@ export class PlayerChat {
     }
 
     handle_color_command(newColor) {
-
-    }
+        
+    }   
 
     handle_leave_command() {
-        this.io.sockets.emit("disconnect");
+        this.player.socket.disconnect();
     }
 
     broadcast_message(text) {
-        // Need to add broadcasting socket on
-        player.chat.setPlayerChats(username, text, time);
-        this.io.sockets.emit("broadcast_message");
+        const broadcast_message = {
+            from: this.player.nickname,
+            text: text,
+            time: Date.now(),
+        };
+
+        this.player.game.io.sockets.emit("broadcast_message", broadcast_message);
     }
 }
