@@ -9,8 +9,9 @@ export interface PlayerDrawInfo {
     position: PlayerPosition;
 }
 export interface PlayerChatInfo {
+    username: string,
+    // command_type: 'Help' | 'Whisper' | 'Nickname' | 'Color' | 'Leave',
     text: string,
-    command_type: 'Whisper' | 'Nickname' | 'Color' | 'Leave',
 }
 
 export interface GameState {

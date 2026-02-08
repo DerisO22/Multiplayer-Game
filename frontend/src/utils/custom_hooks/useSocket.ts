@@ -19,6 +19,7 @@ export const useSocket = () => {
 
         newSocket.on('disconnect', () => {
             console.log(`Disconnected from server`);
+            newSocket.disconnect();
         });
 
         newSocket.on('message', (message: string) => {

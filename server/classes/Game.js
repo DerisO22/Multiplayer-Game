@@ -21,6 +21,14 @@ export class Game {
                     player.setButton(button, value);
                 }
             });
+
+            socket.on("send_message", ({ text }) => {
+                let player = this.players[socket.id];
+
+                if (player) {
+                    player.sendMessage(text);
+                }
+            });
         });
     }
 

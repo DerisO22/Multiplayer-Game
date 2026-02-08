@@ -31,8 +31,6 @@ app.use(cors({
 }))
 
 setInterval(() => {
-    console.log("Running Game Server");
-
     if (game) {
         game.update();
         game.sendState();

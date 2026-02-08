@@ -6,6 +6,7 @@ export class Player {
         this.io = io;
         this.position = {x: 0, y: 0, z: 0};
         this.movespeed = {x: 0.1, y: 0.1, z: 0.1};
+        this.nickname = io;
         /**
          * Current Keyboard Inputs
          */
@@ -35,6 +36,10 @@ export class Player {
     setButton(button, value) {
         this.input[button] = value;
     };
+
+    setNickname(newNickname) {
+        this.nickname = newNickname;
+    }
 
     getDrawInfo() {
         return {

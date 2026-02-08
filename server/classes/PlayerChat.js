@@ -14,7 +14,11 @@ export class PlayerChat {
         this.player = player;
         this.io = io;
 
-        this.player_chats = {};
+        this.player_chats = [];
+    }
+
+    setPlayerChats(username, text, time) {
+        this.player_chats.push({ username, text, time });
     }
 
     getPlayerChats() {
@@ -33,23 +37,23 @@ export class PlayerChat {
     }
 
     parseCommandMessage(text) {
-        const [ command, ...args ] = text.splice(1).split(" ");
+        const [ command, ...args ] = text.slice(1).split(" ");
 
         switch(command.toLowerCase()) {
             case 'help':
-                handle_help_command();
+                this.handle_help_command();
                 break;
             case 'whisper':
-                handle_whisper_command(args);
+                this.handle_whisper_command(args);
                 break;
             case 'nickname':
-                handle_nickname_command(args);
+                this.handle_nickname_command(args);
                 break;
             case 'color':
-                handle_color_command(args);
+                this.handle_color_command(args);
                 break;
             case 'leave':
-                handle_leave_command();
+                this.handle_leave_command();
                 break;
             default:
                 // maybe an error, but would only really
@@ -66,13 +70,33 @@ export class PlayerChat {
 
     }
 
+    /**
+     * /whisper command is going to list the target player using commas
+     * like "/whisper name1,name2,name3 This is the message"
+     */
     handle_whisper_command(args) {
-        const send_to_players = args.split(" ");
+        const [ targetString, ...messageString ] = args;
+        const message = messageString.join(" ");
 
+        const targets = targetString.split(',').map((username) => username.trim());
+
+        const targetPlayers = targets.map((target, index) => {
+            Object.keys(this.player.game.players)
+            .find(p => p.nickname === target[index])
+        })
+
+        if(targetPlayers) {
+            targetPlayers.map((target) => {
+                target.io.emit("whisper", {
+                    from: this.player.nickname,
+                    message: message
+                });
+            })
+        }
     }
 
     handle_nickname_command(newNickname) {
-
+        this.player.setNickname(newNickname);
     }
 
     handle_color_command(newColor) {
@@ -80,10 +104,12 @@ export class PlayerChat {
     }
 
     handle_leave_command() {
-
+        this.io.sockets.emit("disconnect");
     }
 
     broadcast_message(text) {
         // Need to add broadcasting socket on
+        player.chat.setPlayerChats(username, text, time);
+        this.io.sockets.emit("broadcast_message");
     }
 }
