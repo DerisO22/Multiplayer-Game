@@ -8,7 +8,7 @@
  *  "/leave"    - disconnects the player
  * 
  */
-import { HelpCommandMessage } from "../utils/consts";
+import { HelpCommandMessage } from "../utils/consts.js";
 
 export class PlayerChat {
     constructor (player, socket) {

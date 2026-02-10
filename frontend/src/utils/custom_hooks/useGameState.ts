@@ -3,7 +3,7 @@ import type { GameState } from "../types/player";
 import { useEffect, useState } from "react";
 
 export const useGameState = (socket: Socket | null) => {
-    const [gameState, setGameState] = useState<GameState>({ players: [] });
+    const [gameState, setGameState] = useState<GameState>({ players: [], player_chats: [] });
 
     useEffect(() => {
         if(!socket) return;
@@ -17,7 +17,7 @@ export const useGameState = (socket: Socket | null) => {
         return () => {
             socket.off('sendState', handleState);
         }
-    }, [socket])
+    }, [socket]);
 
     return gameState;
 }

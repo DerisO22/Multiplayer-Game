@@ -1,4 +1,4 @@
-import { PlayerChat } from "./PlayerChat";
+import { PlayerChat } from "./PlayerChat.js";
 
 export class Player {
     constructor(game, socket){
