@@ -42,19 +42,19 @@ function App() {
 
     return (
         <div style={{ width: '100vw', height: '100vh' }}>
-            <Canvas camera={{ position: [10, 10, 10], fov: 75 }}>
+            <Canvas camera={{ position: [1000, 100, 100], fov: 75 }}>
                 {/* Lighting */}
                 <ambientLight intensity={0.5} />
                 <directionalLight position={[10, 10, 5]} intensity={1} />
-                <pointLight position={[0, 5, 0]} intensity={0.5} />
+                <pointLight castShadow={true} position={[0, 5, 0]} intensity={10.5} />
 
                 {/* Environment */}
                 <gridHelper args={[50, 50]} />
                 
                 {/* Ground plane */}
-                <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.5, 0]}>
+                <mesh receiveShadow={true} rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.5, 0]}>
                     <planeGeometry args={[100, 100]} />
-                    <meshStandardMaterial color="#1a1a1a" />
+                    <meshStandardMaterial color="white" />
                 </mesh>
 
                 {/* Render all players */}
@@ -74,13 +74,14 @@ function App() {
                 )}
             </Canvas>
 
+            {/* Interface */}
             <StatesInterface cam={{cameraMode, setCameraMode}} localPlayerPosition={localPlayerPosition}/>
             <LoadingInterface />
 
             {/* Game Chat */}
-            {/* {socket?.connected && ( */}
-            <GameChat />
-            {/* )} */}
+            {socket?.connected && (
+                <GameChat />
+            )}
         </div>
     );
 }
