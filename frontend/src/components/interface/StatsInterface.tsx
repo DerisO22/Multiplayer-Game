@@ -1,9 +1,9 @@
-const Interface = () => {
+const StatesInterface = () => {
     return (
-        <div>
-        
+        <div className="stat_interface_container">
+            
         </div>
-    )
+    );
 }
 
-export default Interface;
+export default StatesInterface;

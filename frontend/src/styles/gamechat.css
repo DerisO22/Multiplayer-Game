@@ -28,7 +28,7 @@
     align-items: start;
     justify-content: start;
     overflow-y: auto;
-    gap: 0.1rem;
+    gap: 0.3rem;
     padding-left: 0.4rem;
 }
 
@@ -91,11 +91,13 @@
 /* 
     Announcements
 */
-.announcement_message {
+.message {
     width: 100%;
+    height: fit-content;
     display: flex;
     flex-direction: row;
     align-items: start;
+    justify-content: space-between;
     padding-left: 0.3rem;
 
     color: white;
@@ -106,9 +108,18 @@
 }
 
 .sender_message {
+    width: 100%;
     color: white;
+    display: flex;
+    justify-content: start;
+    padding-left: 0.3rem;
+    height: fit-content;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: break-all;
 }
 
 .sender_time {
     color: white;
+    padding-right: 0.3rem;
 }

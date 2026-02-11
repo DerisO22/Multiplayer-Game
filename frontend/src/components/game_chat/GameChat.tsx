@@ -26,13 +26,21 @@ const GameChat = () => {
             <span className="heading">Game Chat</span>
 
             <div className="messages_container">
-                {chatPayload && chatPayload.broadcast_messages.map((message, index) => (
-                    <div key={message.from + index} className="annoucement_message">
-                        <span className="sender_username">[{message.from}]: </span>
-                        <span className="sender_message">{message.text}</span>
-                        <span className="sender_time">{formatDate(message.time)}</span>
-                    </div>
-                ))}
+                <>
+                    {chatPayload && chatPayload.broadcast_messages.map((message, index) => (
+                        <div key={message.from + index} className="message">
+                            <div className="sender_username">[{message.from}]: </div>
+                            <div className="sender_message">{message.text}</div>
+                            <div className="sender_time">{formatDate(message.time)}</div>
+                        </div>
+                    ))}
+
+                    {chatPayload && chatPayload.whisper_messages.map((message, index) => {
+                        <div key={message.from + index} className="message">
+
+                        </div>
+                    })}
+                </>
             </div>
             
             <GameChatInput socket={socket}/>
