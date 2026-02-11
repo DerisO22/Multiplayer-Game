@@ -20,10 +20,9 @@ const GameChat = ({ socket } : {socket: Socket | null}) => {
                     <span className="sender_username">{message.from}</span>
                     <span className="sender_message">{message.text}</span>
                     <span className="sender_time">{message.time}</span>
-                </div>   
+                </div>
             ))}
             
-
             <GameChatInput socket={socket}/>
         </div>
     );
