@@ -16,17 +16,7 @@ const StatsInterface = ({ cam, localPlayerPosition } : StatsInterfaceProps) => {
     const gameState = useGameState();
 
     return (
-        <div style={{
-            position: 'absolute',
-            top: 20,
-            left: 20,
-            color: 'white',
-            fontFamily: 'monospace',
-            background: 'rgba(0,0,0,0.7)',
-            padding: '15px',
-            borderRadius: '8px',
-            minWidth: '200px'
-        }}>
+        <div className="game_info_container">
             <h3 style={{ margin: '0 0 10px 0' }}>Game Info</h3>
             <div>Players: {gameState.players.length}</div>
             <div>Connection: {socket?.connected ? '🟢 Connected' : '🔴 Disconnected'}</div>
