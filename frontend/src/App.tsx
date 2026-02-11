@@ -7,6 +7,7 @@ import { useKeyboardControls } from './utils/custom_hooks/useKeyboardControls';
 import { useGameState } from './contexts/useGameState';
 import { PlayerCube } from './components/player/PlayerCube';
 import GameChat from './components/game_chat/GameChat';
+import StatesInterface from './components/interface/StatsInterface';
 
 // Camera follower component
 function CameraFollower({ targetPosition }: { targetPosition: { x: number; y: number; z: number } | null }) {
@@ -72,51 +73,7 @@ function App() {
                 )}
             </Canvas>
 
-            {/* UI Overlay */}
-            <div style={{
-                position: 'absolute',
-                top: 20,
-                left: 20,
-                color: 'white',
-                fontFamily: 'monospace',
-                background: 'rgba(0,0,0,0.7)',
-                padding: '15px',
-                borderRadius: '8px',
-                minWidth: '200px'
-            }}>
-                <h3 style={{ margin: '0 0 10px 0' }}>Game Info</h3>
-                <div>Players: {gameState.players.length}</div>
-                <div>Connection: {socket?.connected ? '🟢 Connected' : '🔴 Disconnected'}</div>
-                {socket?.id && <div>Your ID: {socket.id.substring(0, 8)}...</div>}
-                
-                <hr style={{ margin: '10px 0' }} />
-                
-                <div style={{ marginBottom: '5px' }}><strong>Controls:</strong></div>
-                <div>• WASD - Move</div>
-                <div>• Mouse - Rotate camera</div>
-                
-                <button 
-                    onClick={() => setCameraMode(mode => mode === 'follow' ? 'orbit' : 'follow')}
-                    style={{
-                        marginTop: '10px',
-                        padding: '8px 12px',
-                        background: '#4080ff',
-                        border: 'none',
-                        borderRadius: '4px',
-                        color: 'white',
-                        cursor: 'pointer',
-                        width: '100%'
-                    }}
-                >
-                    Camera: {cameraMode === 'follow' ? '📹 Follow' : '🔄 Orbit'}
-                </button>
-                
-                {localPlayerPosition && (
-                    <div style={{ marginTop: '10px', fontSize: '0.9em', opacity: 0.7 }}>
-                        Position: ({localPlayerPosition.x.toFixed(1)}, {localPlayerPosition.y.toFixed(1)}, {localPlayerPosition.z.toFixed(1)})
-                    </div>
-                )}
-            </div>
+            <StatesInterface cam={{cameraMode, setCameraMode}} localPlayerPosition={localPlayerPosition}/>
 
             {/* Loading state */}
             {!socket?.connected && (
