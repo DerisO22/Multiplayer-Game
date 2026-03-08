@@ -3,7 +3,7 @@ import { useGameState } from "../../contexts/useGameState"
 import { useSocket } from "../../contexts/useSocket";
 import { PlayerCube } from "../player/PlayerCube";
 import { useFrame, useThree } from "@react-three/fiber";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Vector3 } from "three";
 
 interface GameWorldProps {

@@ -5,12 +5,16 @@ import GameChat from './components/game_chat/GameChat';
 import StatsInterface from './components/interface/StatsInterface';
 import LoadingInterface from './components/interface/LoadingInterface';
 import Scene from './components/scene/Scene';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function App() {
     const socket = useSocket();
     useKeyboardControls();
     const [cameraMode, setCameraMode] = useState<'follow' | 'orbit'>('follow');
+
+    useEffect(() => {
+        console.log(socket)
+    }, [socket]);
 
     return (
         <div style={{ width: '100vw', height: '100vh' }}>

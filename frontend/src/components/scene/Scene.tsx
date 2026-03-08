@@ -14,4 +14,4 @@ const Scene = ({ cameraMode }: SceneProps) => {
     )
 }
 
-export default Scene
+export default Scene;
