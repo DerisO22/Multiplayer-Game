@@ -1,5 +1,9 @@
 import { PlayerChat } from "./PlayerChat.js";
 
+import RAPIER from  "@dimforge/rapier3d-compat";
+const jumpImpulse = { x: 0.0, y: 10.0, z: 0}
+const wakeUp = true;
+
 export class Player {
     constructor(game, socket){
         this.game = game;
@@ -18,6 +22,19 @@ export class Player {
         this.input = {};
 
         this.chat = new PlayerChat(this, socket);
+
+        /**
+         * Physics Members
+         */
+        let bodyDesc = RAPIER.RigidBodyDesc.dynamic()
+                       .setTranslation(0, 5, 0)
+                       .enabledRotations(false, false, false);
+
+        this.body = this.game.world.createRigidBody(bodyDesc);
+
+        let colliderDesc = RAPIER.ColliderDesc.capsule(0.5, 0.5);
+        this.game.world.createCollider(colliderDesc, this.body);
+
     };
 
     update() {
@@ -32,6 +49,20 @@ export class Player {
 
         this.position.x += xInput * this.movespeed.x;
         this.position.z += zInput * this.movespeed.z;
+
+        const currentVel = this.body.linvel();
+        this.body.setLinvel(
+            { x: xInput * 5, y: currentVel.y, z: zInput * 5 },
+            true
+        );
+
+        /**
+         * Jumping Logic 
+         */
+        if(this.input.jump) {
+            this.body.applyImpulse(jumpImpulse, wakeUp);
+            this.input.jump = false;
+        };
     };
 
     setButton(button, value) {
@@ -43,8 +74,9 @@ export class Player {
     }
 
     getDrawInfo() {
+        const position = this.body.translation();
         return {
-            position: this.position,
+            position: { x: position.x, y: position.y, z: position.z },
         }
     };
 
