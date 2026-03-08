@@ -8,10 +8,9 @@ import Scene from './components/scene/Scene';
 import { useEffect, useState } from 'react';
 
 function App() {
-    const { socket } = useSocket();
+    const { socket, isConnected } = useSocket();
     useKeyboardControls();
     const [cameraMode, setCameraMode] = useState<'follow' | 'orbit'>('follow');
-    const [isConnected, setIsConnected] = useState<boolean | undefined>(socket?.connected)
 
     useEffect(() => {
         console.log("isConnected: ", isConnected);
