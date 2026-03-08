@@ -47,9 +47,6 @@ export class Player {
         if (this.input.forward) zInput--;
         if (this.input.backward) zInput++;
 
-        this.position.x += xInput * this.movespeed.x;
-        this.position.z += zInput * this.movespeed.z;
-
         const currentVel = this.body.linvel();
         this.body.setLinvel(
             { x: xInput * 5, y: currentVel.y, z: zInput * 5 },

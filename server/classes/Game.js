@@ -8,7 +8,6 @@ export class Game {
         this.io = io;
         this.players = {};
         this.world = null;
-        this.initPhysics();
     }
 
     async initPhysics() {

@@ -21,7 +21,6 @@ const io = new Server(server, {
         credentials: true
     }
 });
-const game = new Game(io);
 
 app.set('port', PORT);
 
@@ -30,13 +29,20 @@ app.use(cors({
     credentials: true,
 }))
 
-setInterval(() => {
-    if (game) {
-        game.update();
-        game.sendState();
-    }
-}, FRAME_TIME);
+async function start() {
+    const game = new Game(io);
+    await game.initPhysics();
 
-server.listen(PORT, () => {
-    console.log(`Listening on port ${PORT}`);
-})
+    setInterval(() => {
+        if (game) {
+            game.update();
+            game.sendState();
+        }
+    }, FRAME_TIME);
+    
+    server.listen(PORT, () => {
+        console.log(`Listening on port ${PORT}`);
+    })
+};
+
+start();
