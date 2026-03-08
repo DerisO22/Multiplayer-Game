@@ -8,6 +8,7 @@ const DEFAULT_KEYS: KeyBindings = {
     backward: 's',
     left: 'a',
     right: 'd',
+    jump: 'v'
 };
 
 export const useKeyboardControls = (keys: KeyBindings = DEFAULT_KEYS) => {
@@ -36,6 +37,7 @@ export const useKeyboardControls = (keys: KeyBindings = DEFAULT_KEYS) => {
                 if (key === keys.backward) socket.emit('setButton', { button: 'backward', value: true });
                 if (key === keys.left) socket.emit('setButton', { button: 'left', value: true });
                 if (key === keys.right) socket.emit('setButton', { button: 'right', value: true });
+                if (key === keys.jump) socket.emit('setButton', { button: 'jump', value: true });
             }
         };
 
@@ -48,6 +50,7 @@ export const useKeyboardControls = (keys: KeyBindings = DEFAULT_KEYS) => {
             if (key === keys.backward) socket.emit('setButton', { button: 'backward', value: false });
             if (key === keys.left) socket.emit('setButton', { button: 'left', value: false });
             if (key === keys.right) socket.emit('setButton', { button: 'right', value: false });
+            if (key === keys.jump) socket.emit('setButton', { button: 'jump', value: false });
         };
 
         window.addEventListener('keydown', handleKeyDown);

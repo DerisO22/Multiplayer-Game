@@ -3,4 +3,5 @@ export interface KeyBindings {
     backward: string;
     left: string;
     right: string;
+    jump: string;
 }
