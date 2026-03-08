@@ -12,7 +12,7 @@ const DEFAULT_KEYS: KeyBindings = {
 };
 
 export const useKeyboardControls = (keys: KeyBindings = DEFAULT_KEYS) => {
-    const socket = useSocket();
+    const { socket } = useSocket();
     const pressedKeys = useRef<Set<string>>(new Set());
     const { isPlayerInputting } = useChatInput();
 

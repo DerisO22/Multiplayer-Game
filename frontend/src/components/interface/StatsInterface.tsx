@@ -11,7 +11,7 @@ interface StatsInterfaceProps {
 }
 
 const StatsInterface = ({ cam } : StatsInterfaceProps) => {
-    const socket = useSocket();
+    const { socket } = useSocket();
     const gameState = useGameState();
 
     // Find local player

@@ -9,7 +9,7 @@ interface GameProviderProps {
 }
 
 export const GameProvider = ({ children }: GameProviderProps) => {
-    const socket = useSocket();
+    const { socket } = useSocket();
     const [gameState, setGameState] = useState<GameState>({ players: [] });
 
     useEffect(() => {

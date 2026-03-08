@@ -5,7 +5,7 @@ import GameChatInput from "./GameChatInput";
 import { useSocket } from "../../contexts/useSocket";
 
 const GameChat = () => {
-    const socket = useSocket();
+    const { socket } = useSocket();
     const chatPayload = usePlayerChat(socket);
     
     console.log("hello")
@@ -52,7 +52,9 @@ const GameChat = () => {
                 </>
             </div>
             
-            <GameChatInput socket={socket}/>
+            {socket && (
+                <GameChatInput socket={socket}/>
+            )}
         </div>
     );
 }

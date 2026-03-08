@@ -2,7 +2,7 @@ import { useSocket } from "../../contexts/useSocket";
 import '../../styles/interface.css';
 
 const LoadingInterface = () => {
-    const socket = useSocket();
+    const { socket } = useSocket();
 
     return (
         socket?.connected && (

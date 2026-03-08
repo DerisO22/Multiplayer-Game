@@ -11,7 +11,7 @@ interface GameWorldProps {
 
 const GameWorld = ({ cameraMode } : GameWorldProps) => {
     const gameState = useGameState();
-    const socket = useSocket();
+    const { socket } = useSocket();
     const localPlayerRef = useRef<Mesh>(null!);
 
     // Find local player

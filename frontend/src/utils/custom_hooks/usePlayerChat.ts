@@ -5,7 +5,7 @@ import type { BroadcastMessage } from "../types/playerChat";
 
 const MAX_MESSAGES = 100;
 
-export const usePlayerChat = (socket: Socket | null) => {
+export const usePlayerChat = (socket: Socket | null | undefined) => {
     const [ chatPayload, setChatPayload ] = useState<ChatPayload>({
         color: { newColor: {newColor: ["#FFFFFF"]}},
         username: "",
