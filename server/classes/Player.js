@@ -25,6 +25,12 @@ export class Player {
         this.isGrounded = true;
 
         /**
+         * Animations
+         */
+        // Prob going to be very similar to this.input
+        this.animation = {};
+
+        /**
          * Player Chats
          */
         this.chat = new PlayerChat(this, socket);

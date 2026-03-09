@@ -1,7 +1,7 @@
 import RAPIER from "@dimforge/rapier3d-compat";
 import { Player } from "./Player.js";
 
-const GRAVITY_CONST = -9.81;
+const GRAVITY_CONST = -18.81;
 
 export class Game {
     constructor(io) {

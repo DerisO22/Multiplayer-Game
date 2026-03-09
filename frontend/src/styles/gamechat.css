@@ -137,15 +137,13 @@
     border: none;
     width: 2.5rem;
     height: 2.5rem;
-    background-color: white;
+    background-color: rgba(0, 0, 0, 0.773);
     border-radius: 10px;
-    background-image: url("../../public/message-circle-lines-svgrepo-com.svg");
+    background-image: url("../../public/chat_toggle.svg");
     background-size: contain;
     font-weight: 600;
-    fill: white;
-    color: white;
-    stroke: white;
     cursor: pointer;
+    filter: brightness(1) invert(0);
 
     transition: all 0.3s ease-in-out;
 }
