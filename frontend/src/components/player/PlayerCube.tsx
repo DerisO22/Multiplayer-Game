@@ -1,5 +1,5 @@
 import { useFrame } from '@react-three/fiber';
-import { useRef } from 'react';
+import { forwardRef, useRef } from 'react';
 import { Mesh, Vector3 } from 'three';
 
 interface PlayerProps {
@@ -7,16 +7,17 @@ interface PlayerProps {
     isLocalPlayer?: boolean;
 }
 
-export const PlayerCube: React.FC<PlayerProps> = ({ position, isLocalPlayer = false }) => {
-    const meshRef = useRef<Mesh>(null);
-
+export const PlayerCube = forwardRef<Mesh, PlayerProps>(({ position, isLocalPlayer = false }, ref) => {
+    const internalRef = useRef<Mesh>(null);
     const lerpTarget = useRef(new Vector3());
 
-    useFrame(() => {
-        if(meshRef.current) {
-            lerpTarget.current.set(position.x, position.y, position.z);
+    // Use the forwarded ref for local player, internal ref for remote players
+    const meshRef = (ref && 'current' in ref ? ref : internalRef) as React.RefObject<Mesh>;
 
-            meshRef.current.position.lerp(lerpTarget.current, 0.5);
+    useFrame((_, delta) => {
+        if (meshRef.current) {
+            lerpTarget.current.set(position.x, position.y, position.z);
+            meshRef.current.position.lerp(lerpTarget.current, 0.2);
         }
     });
 
@@ -26,4 +27,4 @@ export const PlayerCube: React.FC<PlayerProps> = ({ position, isLocalPlayer = fa
             <meshStandardMaterial color={isLocalPlayer ? '#4080ff' : '#ff4040'} />
         </mesh>
     );
-};
+});

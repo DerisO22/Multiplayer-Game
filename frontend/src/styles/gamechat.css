@@ -4,7 +4,7 @@
     position: absolute;
     z-index: 100;
     width: 20rem;
-    height: 11rem;
+    height: 14rem;
     top: 0.01rem;
     right: 0.01rem;
 
@@ -30,15 +30,19 @@
     overflow-y: auto;
     gap: 0.3rem;
     padding-left: 0.4rem;
+
+    border-top: 1px solid white;
+    padding-top: 0.5rem;
 }
 
 .heading {
     font-size: 1.2rem;
     color: white;
     font-weight: 600;
-    font-family: 'monospace';
+    font-family: monospace;
     padding-left: 0.4rem;
-    padding-top: 0.2rem;
+    padding-top: 0.5rem;
+    word-spacing: -0.4rem;
 }
 
 /* 
@@ -98,12 +102,14 @@
     align-items: start;
     justify-content: space-between;
     padding-left: 0.3rem;
+    font-family: monospace;
 
     color: white;
 }
 
 .sender_username {
     color: white;
+    width: fit-content;
 }
 
 .sender_message {
@@ -111,14 +117,48 @@
     color: white;
     display: flex;
     justify-content: start;
-    padding-left: 0.3rem;
     height: fit-content;
+    padding-left: 0.3rem;
     text-overflow: ellipsis;
     overflow: hidden;
     word-break: break-all;
 }
 
 .sender_time {
+    width: fit-content;
     color: white;
-    padding-right: 0.3rem;
+    padding-right: 0.5rem;
+}
+
+/* 
+*   Game Chat Toggle Button
+*/
+.game_chat_toggle_container {
+    top: 0.4rem;
+    right: 0.5rem;
+    position: absolute;
+    z-index: 100;
+}
+
+.game_chat_toggle_button {
+    border: none;
+    width: 1.8rem;
+    height: 1.8rem;
+    background-color: rgba(0, 0, 0, 0.773);
+    border-radius: 10px;
+    background-image: url("../../public/chat_toggle.svg");
+    background-size: contain;
+    font-weight: 600;
+    cursor: pointer;
+    filter: brightness(1) invert(0);
+
+    transition: all 0.3s ease-in-out;
+}
+
+.game_chat_toggle_button:hover {
+    transform: scale(1.1);
+}
+
+.game_chat_toggle_button:active {
+    transform: scale(0.6);
 }

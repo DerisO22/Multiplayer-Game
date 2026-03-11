@@ -1,38 +1,18 @@
-import { OrbitControls } from "@react-three/drei";
 import { useGameState } from "../../contexts/useGameState"
 import { useSocket } from "../../contexts/useSocket";
 import { PlayerCube } from "../player/PlayerCube";
-import { useFrame, useThree } from "@react-three/fiber";
 import { useRef } from "react";
-import { Vector3 } from "three";
+import { Mesh } from "three";
+import { CameraFollower } from "../player/CameraFollower";
 
 interface GameWorldProps {
     cameraMode: 'follow' | 'orbit',
 }
 
-// Camera follower component
-function CameraFollower({ targetPosition }: { targetPosition: { x: number; y: number; z: number } | null }) {
-    const { camera } = useThree();
-    const targetRef = useRef(new Vector3());
-
-    useFrame(() => {
-        if (targetPosition) {
-            targetRef.current.set(
-                targetPosition.x,
-                targetPosition.y + 5,
-                targetPosition.z + 10
-            );
-            camera.position.lerp(targetRef.current, 0.1);
-            camera.lookAt(targetPosition.x, targetPosition.y, targetPosition.z);
-        }
-    });
-
-    return null;
-}
-
 const GameWorld = ({ cameraMode } : GameWorldProps) => {
     const gameState = useGameState();
-    const socket = useSocket();
+    const { socket } = useSocket();
+    const localPlayerRef = useRef<Mesh>(null!);
 
     // Find local player
     const localPlayer = gameState.players.find(player => player.id === socket?.id);
@@ -42,18 +22,17 @@ const GameWorld = ({ cameraMode } : GameWorldProps) => {
         <>
             {/* Render all players */}
             {gameState.players.map((player) => (
-            <PlayerCube
-                key={player.id}
-                position={player.position}
-                isLocalPlayer={player.id === socket?.id}
-            />
+                <PlayerCube
+                    ref={player.id === socket?.id ? localPlayerRef : null}
+                    key={player.id}
+                    position={player.position}
+                    isLocalPlayer={player.id === socket?.id}
+                />
             ))}
 
             {/* Camera controls */}
-            {cameraMode === 'follow' && localPlayerPosition ? (
-                <CameraFollower targetPosition={localPlayerPosition} />
-            ) : (
-                <OrbitControls />
+            {cameraMode === 'follow' && localPlayerPosition && (
+                <CameraFollower targetRef={localPlayerRef} />
             )}
         </>
     )

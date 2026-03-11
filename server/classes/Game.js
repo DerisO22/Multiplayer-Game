@@ -1,30 +1,30 @@
+global.self = global; 
 import RAPIER from "@dimforge/rapier3d-compat";
 import { Player } from "./Player.js";
+import { World } from "./GameWorld/World.js";
+import { GameState } from "./GameState.js";
 
-const GRAVITY_CONST = -9.81;
+const GRAVITY_CONST = -18.81;
 
 export class Game {
     constructor(io) {
         this.io = io;
         this.players = {};
         this.world = null;
-        this.initPhysics();
+        this.GameState = new GameState(io);
     }
 
     async initPhysics() {
         await RAPIER.init();
+        this.world = new RAPIER.World({ x: 0.0, y: GRAVITY_CONST, z: 0 });
 
-        const gravity = { x: 0.0, y: GRAVITY_CONST, z: 0 };
-        this.world = new RAPIER.World(gravity);
-
-        let groundBodyDesc = RAPIER.RigidBodyDesc.fixed();
-        let groundBody = this.world.createRigidBody(groundBodyDesc);
-        let groundColliderDesc = RAPIER.ColliderDesc.cuboid(100, 0.1, 100); 
-        this.world.createCollider(groundColliderDesc, groundBody);
-
+        const gameWorld = new World(this.world);
+        gameWorld.initWorldPhysics(this.GameState.map);
+    
+        console.log("Physics Loaded via gltf-transform");
         this.setupSocketEvents();
     }
-
+    
     setupSocketEvents() {
         this.io.on("connection", (socket) => {
             this.io.sockets.emit("message", `player at socket ${socket.id} has connected.`);

@@ -11,4 +11,4 @@ export const HelpCommandMessage =
 
  4. "/leave" - disconnects the player and closes browser
  example usage: "/leave"
-`
+`;

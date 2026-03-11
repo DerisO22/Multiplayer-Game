@@ -8,12 +8,12 @@ import Scene from './components/scene/Scene';
 import { useEffect, useState } from 'react';
 
 function App() {
-    const socket = useSocket();
+    const { socket, isConnected } = useSocket();
     useKeyboardControls();
     const [cameraMode, setCameraMode] = useState<'follow' | 'orbit'>('follow');
 
     useEffect(() => {
-        console.log(socket)
+        console.log("isConnected: ", isConnected);
     }, [socket]);
 
     return (
@@ -25,23 +25,24 @@ function App() {
                 <pointLight castShadow={true} position={[0, 5, 0]} intensity={10.5} />
 
                 {/* Environment */}
-                <gridHelper args={[50, 50]} />
+                {/* <gridHelper args={[50, 50]} /> */}
                 <Scene cameraMode={cameraMode} />
                 
                 {/* Ground plane */}
-                <mesh receiveShadow={true} rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.5, 0]}>
+                {/* <mesh receiveShadow={true} rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.5, 0]}>
                     <planeGeometry args={[100, 100]} />
                     <meshStandardMaterial color="white" />
-                </mesh>
+                </mesh> */}
             </Canvas>
 
             {/* Interface */}
             <StatsInterface cam={{cameraMode, setCameraMode}}/>
-            <LoadingInterface />
-
+            
             {/* Game Chat */}
-            {socket?.connected && (
+            {isConnected ? (
                 <GameChat />
+            ): (
+                <LoadingInterface />
             )}
         </div>
     );

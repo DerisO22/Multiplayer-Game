@@ -1,4 +1,4 @@
-import type { Dispatch, SetStateAction } from "react";
+import { memo, type Dispatch, type SetStateAction } from "react";
 import { useGameState } from "../../contexts/useGameState";
 import { useSocket } from "../../contexts/useSocket";
 import '../../styles/interface.css';
@@ -11,7 +11,7 @@ interface StatsInterfaceProps {
 }
 
 const StatsInterface = ({ cam } : StatsInterfaceProps) => {
-    const socket = useSocket();
+    const { socket } = useSocket();
     const gameState = useGameState();
 
     // Find local player
@@ -32,7 +32,10 @@ const StatsInterface = ({ cam } : StatsInterfaceProps) => {
             <div>• Mouse - Rotate camera</div>
             
             <button 
-                onClick={() => cam.setCameraMode(mode => mode === 'follow' ? 'orbit' : 'follow')}
+                onClick={(e) => {
+                    e.preventDefault();
+                    cam.setCameraMode(mode => mode === 'follow' ? 'orbit' : 'follow');
+                }}
                 style={{
                     marginTop: '10px',
                     padding: '8px 12px',
@@ -56,4 +59,4 @@ const StatsInterface = ({ cam } : StatsInterfaceProps) => {
     );
 }
 
-export default StatsInterface;
+export default memo(StatsInterface);

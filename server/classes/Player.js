@@ -15,12 +15,24 @@ export class Player {
         /**
          * Current Keyboard Inputs
          */
-        // w - forward
-        // a - left
-        // s - backward
-        // d - right
+        //     w - forward
+        //     a - left
+        //     s - backward
+        //     d - right
+        // space - jump
         this.input = {};
+        this.canJump = true;
+        this.isGrounded = true;
 
+        /**
+         * Animations
+         */
+        // Prob going to be very similar to this.input
+        this.animation = {};
+
+        /**
+         * Player Chats
+         */
         this.chat = new PlayerChat(this, socket);
 
         /**
@@ -34,7 +46,28 @@ export class Player {
 
         let colliderDesc = RAPIER.ColliderDesc.capsule(0.5, 0.5);
         this.game.world.createCollider(colliderDesc, this.body);
+    };
 
+    checkGrounded() {
+        const origin = this.body.translation();
+        const ray = new RAPIER.Ray({ x: origin.x, y: origin.y, z: origin.z }, { x: 0, y: -1, z: 0 });
+        const hit = this.game.world.castRay(ray, 0.1, true);
+
+        return hit !== null;
+    }
+
+    handleJump() {
+        if(!this.isGrounded) return;
+        if(!this.canJump) return;
+        this.body.applyImpulse(jumpImpulse, wakeUp);
+        this.input.jump = false;
+        this.canJump = false;
+
+        this.isGrounded = this.checkGrounded();
+
+        setTimeout(() => {
+            this.canJump = true;
+        }, 1000);
     };
 
     update() {
@@ -47,9 +80,6 @@ export class Player {
         if (this.input.forward) zInput--;
         if (this.input.backward) zInput++;
 
-        this.position.x += xInput * this.movespeed.x;
-        this.position.z += zInput * this.movespeed.z;
-
         const currentVel = this.body.linvel();
         this.body.setLinvel(
             { x: xInput * 5, y: currentVel.y, z: zInput * 5 },
@@ -60,8 +90,7 @@ export class Player {
          * Jumping Logic 
          */
         if(this.input.jump) {
-            this.body.applyImpulse(jumpImpulse, wakeUp);
-            this.input.jump = false;
+            this.handleJump()
         };
     };
 

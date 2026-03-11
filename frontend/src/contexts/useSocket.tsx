@@ -7,10 +7,16 @@ interface SocketProviderProps {
     children: ReactNode;
 }
 
-export const SocketContext = createContext<Socket | null | undefined>(undefined);
+interface SocketContextType {
+    socket: Socket | null | undefined,
+    isConnected: boolean
+}
+
+export const SocketContext = createContext<SocketContextType | undefined>(undefined);
 
 export const SocketProvider = ({ children }: SocketProviderProps) => {
     const [socket, setSocket] = useState<Socket | null>(null);
+    const [isConnected, setIsConnected ] = useState<boolean>(false);
 
     useEffect(() => {
         const newSocket = io(SERVER_URL, {
@@ -21,6 +27,7 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
 
         newSocket.on('connect', () => {
             console.log(`Connected to server: ${socket?.id}`);
+            setIsConnected(true);
         });
 
         newSocket.on('disconnect', () => {
@@ -37,7 +44,7 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
     }, []);
 
     return (
-        <SocketContext.Provider value={ socket }>
+        <SocketContext.Provider value={{socket, isConnected}}>
             { children }
         </SocketContext.Provider>
     )
