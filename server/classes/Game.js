@@ -17,15 +17,17 @@ export class Game {
     }
 
     async startGame() {
-        this.Lobby.startVoting();
+        const map_winner = await this.Lobby.startVoting();
+
+        await this.initPhysics(map_winner)
     }
 
-    async initPhysics() {
+    async initPhysics(map_winner) {
         await RAPIER.init();
         this.world = new RAPIER.World({ x: 0.0, y: GRAVITY_CONST, z: 0 });
 
         const gameWorld = new World(this.world);
-        gameWorld.initWorldPhysics(this.GameState.map);
+        gameWorld.initWorldPhysics(map_winner);
     
         console.log("Physics Loaded via gltf-transform");
         this.setupSocketEvents();

@@ -1,7 +1,6 @@
 export class GameState {
     constructor() {
         this.game_state = "WAITING";
-        this.map = "Hill";
     }
 
     handleMapVote() {
