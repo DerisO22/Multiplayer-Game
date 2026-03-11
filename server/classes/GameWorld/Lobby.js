@@ -11,9 +11,7 @@ export class Lobby {
             map3: 0
         }
 
-        this.player_votes = {
-
-        }
+        this.player_votes = {}
     }
 
     getVotingState() {
