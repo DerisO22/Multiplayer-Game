@@ -3,6 +3,7 @@ import RAPIER from "@dimforge/rapier3d-compat";
 import { Player } from "./Player.js";
 import { World } from "./GameWorld/World.js";
 import { GameState } from "./GameState.js";
+import { Lobby } from "./GameWorld/Lobby.js";
 
 const GRAVITY_CONST = -18.81;
 
@@ -12,6 +13,11 @@ export class Game {
         this.players = {};
         this.world = null;
         this.GameState = new GameState(io);
+        this.Lobby = new Lobby(io);
+    }
+
+    async startGame() {
+        this.Lobby.startVoting();
     }
 
     async initPhysics() {

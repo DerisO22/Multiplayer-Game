@@ -1,7 +1,7 @@
 export class GameState {
     constructor() {
-        this.game_state = "WAITING" | "Ongoing" | "Ended";
-        this.map = "Hill" | "Valley" | "Farm";
+        this.game_state = "WAITING";
+        this.map = "Hill";
     }
 
     handleMapVote() {

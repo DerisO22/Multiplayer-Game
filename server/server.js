@@ -7,6 +7,7 @@ import cors from 'cors';
 dotenv.config();
 
 import { Game } from './classes/Game.js';
+import { Lobby } from './classes/GameWorld/Lobby.js';
 
 const PORT = process.env.PORT || 3001;
 const FRAME_TIME = Math.floor(1000 / 60);
@@ -31,7 +32,7 @@ app.use(cors({
 
 async function start() {
     const game = new Game(io);
-    await game.initPhysics();
+    await game.run();
 
     setInterval(() => {
         if (game) {
