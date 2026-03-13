@@ -1,4 +1,6 @@
-const Voting = () => {
+const Voting = (voting_started : boolean) => {
+
+    
     return (
         <div className="voting_interface_container"> 
             
