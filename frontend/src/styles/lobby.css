@@ -26,12 +26,20 @@
     width: 20rem;
 }
 
-.exit_button {
+/* 
+    Lobby Menu (Top-Right)
+*/
+.lobby_menu_container {
     position: absolute;
-    width: 3rem;
-    height: 3rem;
     top: 1rem;
     right: 1rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.menu_button {
+    width: 3rem;
+    height: 3rem;
 
     background-color: rgba(153, 186, 115, 0.558);
     border: 2px solid rgb(12, 102, 12);
@@ -44,12 +52,12 @@
     transition: all 0.3s ease-in-out;
 }
 
-.exit_button:hover {
+.menu_button:hover {
     background-color: rgb(224, 220, 145);
     border: 2px solid rgb(41, 134, 131);
     transform: scale(1.05) translateY(-2px);
 }
 
-.exit_button:active {
+.menu_button:active {
     transform: scale(0.8);
 }

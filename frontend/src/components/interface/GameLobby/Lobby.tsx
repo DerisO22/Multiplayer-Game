@@ -1,8 +1,14 @@
-import Exit from "./Exit";
 import Voting from "./Voting";
 import '../../../styles/lobby.css';
+import { useEffect } from "react";
+import { scroll_reveal } from "../../../utils/consts/ScrollReveal";
+import LobbyMenu from "./LobbyMenu";
 
 const Lobby = () => {
+    useEffect(() => {
+        scroll_reveal.reveal('.logo_container', { origin: "left" });
+    }, []);
+
     return (
         <div className="lobby_screen_container">
             {/* Info and Stuff */}
@@ -11,7 +17,7 @@ const Lobby = () => {
             </div>
 
             <Voting />
-            <Exit />
+            <LobbyMenu />
         </div>
     )
 }

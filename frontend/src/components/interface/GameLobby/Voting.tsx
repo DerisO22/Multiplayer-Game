@@ -1,6 +1,5 @@
-const Voting = (voting_started : boolean) => {
+const Voting = () => {
 
-    
     return (
         <div className="voting_interface_container"> 
             
@@ -8,4 +7,4 @@ const Voting = (voting_started : boolean) => {
     )
 }
 
-export default Voting;
+export default Voting; 
