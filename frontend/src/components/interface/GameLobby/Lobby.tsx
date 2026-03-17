@@ -1,10 +1,12 @@
 import Voting from "./Voting";
 import '../../../styles/lobby.css';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { scroll_reveal } from "../../../utils/consts/ScrollReveal";
 import LobbyMenu from "./LobbyMenu";
 
 const Lobby = () => {
+    const [ isPlayerVoting, setIsPlayerVoting ] = useState<boolean>(true);
+
     useEffect(() => {
         scroll_reveal.reveal('.logo_container', { origin: "left" });
     }, []);
@@ -16,7 +18,10 @@ const Lobby = () => {
                 <img className="logo_image" src="../../../../public/game_logo.webp"></img>
             </div>
 
-            <Voting />
+            { isPlayerVoting && (
+                <Voting />    
+            )}
+            
             <LobbyMenu />
         </div>
     )

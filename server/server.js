@@ -31,7 +31,7 @@ app.use(cors({
 
 async function start() {
     const game = new Game(io);
-    await game.run();
+    await game.startGame();
 
     setInterval(() => {
         if (game) {

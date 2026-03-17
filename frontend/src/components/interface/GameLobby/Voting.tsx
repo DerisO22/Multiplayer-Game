@@ -29,7 +29,7 @@ const Voting = () => {
 
             <div className="map_cards_container">
                 {maps.map((map_data, index) => (
-                    <div style={{ backgroundImage: `url(${get_map_vote_path(map_data.map_name)})` }} 
+                    <div style={{ backgroundImage: `url(${get_map_vote_path(map_data.map_name)})`}} 
                         onClick={handlePlayerVote} 
                         className="map_vote_card" 
                         key={index}

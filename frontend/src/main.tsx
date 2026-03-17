@@ -5,7 +5,7 @@ import App from './App.tsx';
 import { SocketProvider } from './contexts/useSocket.tsx';
 import { GameProvider } from './contexts/useGameState.tsx';
 import { ChatInputProvider } from './contexts/ChatInput.tsx';
-import { VotingContextProvider } from './contexts/Voting.tsx';
+import { VotingContextProvider } from './contexts/VotingContext.tsx';
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>

@@ -11,15 +11,15 @@ export class World {
 
         this.map_paths = {
             map1: "./assets/low_poly_environment_compressed-v1.glb",
-            map2: "",
-            map3: "",
+            map2: "./assets/low_poly_environment_compressed-v1(1).glb",
+            map3: "./assets/low_poly_environment_compressed-v1(2).glb",
         }
     }
 
     /**
      * Handle Map Path
      */
-    async getMapPath(map_winner) {
+    getMapPath(map_winner) {
         return this.map_paths[map_winner];
     }
 

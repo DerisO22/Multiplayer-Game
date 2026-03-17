@@ -17,9 +17,15 @@ export class Game {
     }
 
     async startGame() {
-        const map_winner = await this.Lobby.startVoting();
-
-        await this.initPhysics(map_winner)
+        try {
+            const map_winner = await this.Lobby.startVoting();
+            console.log(`Map ${map_winner} won the vote`);
+ 
+            await this.initPhysics(map_winner);
+        } catch (error) {
+            console.error("Error starting game:", error);
+            throw error;
+        }
     }
 
     async initPhysics(map_winner) {
