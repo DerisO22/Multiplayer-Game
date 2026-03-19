@@ -74,12 +74,8 @@ export class Lobby {
                 const elapsed = Date.now() - this.voting_start_time;
                 const remaining = Math.max(0, this.voting_duration - elapsed);
                 
-                console.log(`[Lobby] Late connection detected! Client ${socket.id} missed start_vote`);
-                console.log(`[Lobby] Sending voting state: elapsed=${elapsed}ms, remaining=${remaining}ms`);
-                
-                // Send voting state directly to this client
                 socket.emit("start_vote", {
-                    duration: remaining,  // How much time is LEFT (in ms)
+                    duration: remaining,
                     server_time: new Date(this.voting_start_time),
                     current_votes: { ...this.votes }
                 });
