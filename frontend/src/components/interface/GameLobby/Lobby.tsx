@@ -1,6 +1,6 @@
 import Voting from "./Voting";
 import '../../../styles/lobby.css';
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { scroll_reveal } from "../../../utils/consts/ScrollReveal";
 import LobbyMenu from "./LobbyMenu";
 import { useVoting } from "../../../contexts/VotingContext";
@@ -16,17 +16,17 @@ const Lobby = () => {
         <>
             {!hasVotingStarted && !hasVotingEnded && (
                 <div className="lobby_screen_container">
-                {/* Info and Stuff */}
-                <div className="logo_container">
-                    <img className="logo_image" src="../../../../public/game_logo.webp"></img>
+                    {/* Info and Stuff */}
+                    <div className="logo_container">
+                        <img className="logo_image" src="../../../../public/game_logo.webp"></img>
+                    </div>
+                    
+                    <LobbyMenu />
                 </div>
-                
-                <LobbyMenu />
-            </div>
             )}
 
             { hasVotingStarted && !hasVotingEnded && (
-                <Voting />    
+                <Voting />
             )}
         </>
     )
