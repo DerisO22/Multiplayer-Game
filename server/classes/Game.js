@@ -3,7 +3,7 @@ import RAPIER from "@dimforge/rapier3d-compat";
 import { Player } from "./Player.js";
 import { World } from "./GameWorld/World.js";
 import { GameState } from "./GameState.js";
-import { Lobby } from "./GameWorld/Lobby.js";
+import { Lobby } from "./Lobby.js";
 
 const GRAVITY_CONST = -18.81;
 const NEEDED_PLAYERS = 5;
