@@ -46,7 +46,7 @@ const LobbyMenu = () => {
         <>
             <div className="lobby_menu_container">
                 <div className="menu_button_container">
-                    <button onClick={handleMusicToggle} className={`menu_button music_toggle`}></button>
+                    <button onClick={handleMusicToggle} className={`menu_button ${isMusicOn ? "music_toggle" : "muted_music_button"}`}></button>
                 </div>
                 
                 <div className="menu_button_container">
