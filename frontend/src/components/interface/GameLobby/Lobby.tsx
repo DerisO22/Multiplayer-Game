@@ -71,16 +71,16 @@ const Lobby = () => {
                     </div>
                     
                     <LobbyMenu />
+
+                    {/* Player List */}
+                    {isPlayerListVisible && (
+                        <PlayerList />
+                    )}
                 </div>
             )}
 
             {hasVotingStarted && !hasVotingEnded && (
                 <Voting />
-            )}
-
-            {/* Player List */}
-            {isPlayerListVisible && (
-                <PlayerList />
             )}
         </>
     )

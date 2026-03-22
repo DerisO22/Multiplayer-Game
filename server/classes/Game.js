@@ -105,7 +105,7 @@ export class Game {
                 // Lobby menu UI info
                 // Pending Player Count
                 // Probably Player Profiles (After feature to edit usernames in lobby gets implemented)
-                this.io.sockets.emit("lobby_info", { total_players: Object.keys(this.pending_sockets).length });
+                this.io.sockets.emit("lobby_info", { total_players: Object.keys(this.pending_sockets).length, pending_socket_ids: Object.keys(this.pending_sockets) });
             }
 
             socket.on("disconnect", (reason) => {
@@ -117,7 +117,7 @@ export class Game {
                 // Lobby menu UI info
                 // Pending Player Count
                 // Probably Player Profiles (After feature to edit usernames in lobby gets implemented)
-                this.io.sockets.emit("lobby_info", { total_players: Object.keys(this.pending_sockets).length });
+                this.io.sockets.emit("lobby_info", { total_players: Object.keys(this.pending_sockets).length, pending_socket_ids: Object.keys(this.pending_sockets) });
 
                 if (player && this.world) {
                     this.world.removeRigidBody(player.body);

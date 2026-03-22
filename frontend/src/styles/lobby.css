@@ -153,6 +153,73 @@
     background-image: url("../../public/setting.png");
 }
 
+/*
+    Player List
+*/
+.player_list_container {
+    width: 20rem;
+    height: 30rem;
+    background-color: rgba(52, 52, 52, 0.668);
+    z-index: 102;
+    right: 2rem;
+    top: 11rem;
+    padding: 1rem 1rem 1rem 1rem;
+    position: absolute;
+    overflow-y: auto;
+    background-color: rgba(35, 35, 35, 0.558);
+    border: none;
+    box-shadow: 0 0 5px 0 rgb(0, 23, 1);
+    user-select: none;
+    visibility: hidden;
+}
+
+.player_list_header {
+    font-size: 1.4rem;
+    color: white;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgb(255, 255, 255);
+}
+
+.players_container {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.player_list_item_container {
+    width: 100%;
+    height: 2.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.2rem;
+    background-color: rgba(0, 255, 255, 0.459);
+
+    transition: all 0.3s ease-in-out;
+}
+
+.player_list_item {
+    font-size: 1.2rem;
+    color: white;
+}
+
+.player_icon {
+    width: 2rem;
+    height: 1.5rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url("../../public/avatar.png");
+}
+
+.player_list_item_container:hover {
+    transform: scale(1.04);
+}
+
+.player_list_item_container:active {
+    transform: scale(0.9);
+}   
+
 /* 
     Voting Interface
 */
