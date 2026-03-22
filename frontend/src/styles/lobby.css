@@ -157,12 +157,12 @@
     Player List
 */
 .player_list_container {
-    width: 20rem;
-    height: 30rem;
+    width: 30rem;
+    height: 40rem;
     background-color: rgba(52, 52, 52, 0.668);
     z-index: 102;
     right: 2rem;
-    top: 11rem;
+    margin-top: 11rem;
     padding: 1rem 1rem 1rem 1rem;
     position: absolute;
     overflow-y: auto;
@@ -305,4 +305,19 @@
     font-size: 2rem;
     color: white;
     text-shadow: 1px 0 5px red;
+}
+
+/*
+*
+*
+*  Media Queries
+*
+*
+*/
+@media screen and (max-width: 1000px) {
+    .player_list_container {
+        bottom: 1rem;
+        width: 20rem;
+        height: 25rem;
+    }
 }
