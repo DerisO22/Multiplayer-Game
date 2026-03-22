@@ -57,7 +57,7 @@ export class Game {
                     // Lobby menu UI info
                     // Pending Player Count
                     // Probably Player Profiles (After feature to edit usernames in lobby gets implemented)
-                    this.io.sockets.emit("lobby_info", { total_players: Object.keys(this.pending_sockets).length, total_active_players: Object.keys(this.players).length });
+                    this.io.sockets.emit("lobby_info", { total_players: Object.keys(this.pending_sockets).length });
                 }
             }, 5000);
         });

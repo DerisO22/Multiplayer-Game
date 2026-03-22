@@ -19,7 +19,6 @@ export const LobbyProvider = ({ children }: LobbyProviderProps) => {
         if(!socket) return;
 
         socket.on("lobby_info", (payload) => {
-            console.log(payload);
             const total_players = payload.total_players || 0;
 
             setPlayerCount(total_players);

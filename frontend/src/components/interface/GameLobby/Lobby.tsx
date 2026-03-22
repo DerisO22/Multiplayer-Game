@@ -10,8 +10,6 @@ const Lobby = () => {
     const { total_players } = useLobby();
     const { hasVotingStarted, hasVotingEnded } = useVoting();
 
-    console.log(total_players);
-
     useEffect(() => {
         scroll_reveal.reveal('.logo_container', { origin: "left" });
     }, []);
@@ -23,6 +21,10 @@ const Lobby = () => {
                     {/* Info and Stuff */}
                     <div className="logo_container">
                         <img className="logo_image" src="../../../../public/game_logo.webp"></img>
+                    </div>
+
+                    <div className="lobby_info_container">
+                        <h1 className="header1">Total Player: {total_players}</h1>
                     </div>
                     
                     <LobbyMenu />
