@@ -5,6 +5,7 @@ import { scroll_reveal } from "../../../utils/consts/ScrollReveal";
 import LobbyMenu from "./LobbyMenu";
 import { useVoting } from "../../../contexts/VotingContext";
 import { useLobby } from "../../../contexts/LobbyContext";
+import PlayerList from "./PlayerList";
 
 const Lobby = () => {
     const { total_players } = useLobby();
@@ -22,22 +23,24 @@ const Lobby = () => {
     }, []);
 
     useEffect(() => {
+        // Just looking at forcing re-renders here
         setTest(total_players);
     }, [total_players]);
 
-    const toggleLobbyList = () => {
-
+    const toggleLobbyList = (e: React.MouseEvent) => {
+        e.preventDefault();
+        setIsPlayerListVisible(prev => !prev);
     }
 
     return (
         <>
             {!hasVotingStarted && !hasVotingEnded && (
                 <div className="lobby_screen_container">
-                    {/* Info and Stuff */}
                     <div className="logo_container">
                         <img className="logo_image" src="../../../../public/game_logo.webp"></img>
                     </div>
 
+                    {/* Main Lobby Buttons */}
                     <div className="lobby_info_container">
                         <div className="options_menu">
                             <div className="option_button_container">
@@ -62,8 +65,7 @@ const Lobby = () => {
                             </div>
                         </div>
 
-
-
+                        {/* Extra Pre-Game Info */}
                         <p className="info_text">Players Waiting: <span className="highlight_text">{total_players}</span></p>
                         <p className="info_text">Players Needed To Start: <span className="highlight_text">6</span></p>
                     </div>
@@ -74,6 +76,11 @@ const Lobby = () => {
 
             {hasVotingStarted && !hasVotingEnded && (
                 <Voting />
+            )}
+
+            {/* Player List */}
+            {isPlayerListVisible && (
+                <PlayerList />
             )}
         </>
     )
