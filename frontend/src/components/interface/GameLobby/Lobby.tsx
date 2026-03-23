@@ -66,8 +66,11 @@ const Lobby = () => {
                         </div>
 
                         {/* Extra Pre-Game Info */}
-                        <p className="info_text">Players Waiting: <span className="highlight_text">{total_players}</span></p>
-                        <p className="info_text">Players Needed To Start: <span className="highlight_text">6</span></p>
+                        <div className="extra_lobby_info">
+                            <div className="info_text">Players Waiting: <span className="highlight_text">{total_players}</span></div>
+                            <div className="info_text">Players Needed To Start: <span className="highlight_text">6</span></div>
+                        </div>
+                        
                     </div>
                     
                     <LobbyMenu />
