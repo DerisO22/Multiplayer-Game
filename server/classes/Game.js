@@ -4,6 +4,7 @@ import { Player } from "./Player.js";
 import { World } from "./GameWorld/World.js";
 import { GameState } from "./GameState.js";
 import { Lobby } from "./Lobby.js";
+import { CharacterFactory } from "./Characters/CharacterFactory.js";
 
 const GRAVITY_CONST = -18.81;
 const NEEDED_PLAYERS = 5;
@@ -22,10 +23,8 @@ export class Game {
     async startGame() {
         try {
             this.setupSocketEvents();
-            
             console.log("Socket events registered, waiting for clients...");
             
-            // testing a timeout to see if we can wait to vote until enough players
             await this.lobbyWait();
             
             const map_winner = await this.Lobby.startVoting();
@@ -72,14 +71,19 @@ export class Game {
         // Create Player instances for anyone connects during voting
         if (this.pending_sockets) {
             console.log(`Creating ${Object.keys(this.pending_sockets).length} pending players...`);
+            
             for (const [socketId, socket] of Object.entries(this.pending_sockets)) {
                 try {
-                    this.players[socketId] = new Player(this, socket);
-                    console.log(`Player created for pending socket ${socketId}`);
+                    // Add character selection
+                    const select_character = socket.selectedCharacter || "carrot"
+
+                    this.players[socketId] = CharacterFactory.createCharacter(select_character, this, socket);
+                    console.log(`Player created for pending socket ${socketId} with character ${select_character}`);
                 } catch (error) {
                     console.error(`Failed to create player for ${socketId}:`, error);
                 }
             }
+
             this.pending_sockets = {};
         }
     }
@@ -89,13 +93,21 @@ export class Game {
             console.log(`Socket connected: ${socket.id}`);
             this.io.sockets.emit("message", `player at socket ${socket.id} has connected.`);
 
+            socket.emit("available_characters", {
+                characters: CharacterFactory.getAvailableCharacters(),
+                characterInfo: this.getCharacterSelectionInfo()
+            })
+            
+            socket.on("select_character", ({ character }) => {
+                this.handleCharacterSelection(socket, character);
+            })
+
             // Lobby vote
             this.Lobby.setUpVotingSockets(socket);
             
             if (this.world) {
                 try {
-                    this.players[socket.id] = new Player(this, socket);
-                    console.log(`Player created immediately for ${socket.id}`);
+                    console.log(`World ready, waiting for character selection from ${socket.id}`);
                 } catch (error) {
                     console.error(`Failed to create player for ${socket.id}:`, error);
                 }
@@ -103,6 +115,11 @@ export class Game {
                 console.log(`World not ready, deferring player creation for ${socket.id}`);
                 this.pending_sockets = this.pending_sockets || {};
                 this.pending_sockets[socket.id] = socket;
+
+                // Lobby menu UI info
+                // Pending Player Count
+                // Probably Player Profiles (After feature to edit usernames in lobby gets implemented)
+                this.io.sockets.emit("lobby_info", { total_players: Object.keys(this.pending_sockets).length, pending_socket_ids: Object.keys(this.pending_sockets) });
             }
 
             socket.on("disconnect", (reason) => {
@@ -110,6 +127,11 @@ export class Game {
                 console.log(`Player disconnected: ${socket.id}`);
 
                 this.io.sockets.emit("message", `Player at socket ${socket.id} has disconnected`);
+                
+                // Lobby menu UI info
+                // Pending Player Count
+                // Probably Player Profiles (After feature to edit usernames in lobby gets implemented)
+                this.io.sockets.emit("lobby_info", { total_players: Object.keys(this.pending_sockets).length, pending_socket_ids: Object.keys(this.pending_sockets) });
 
                 if (player && this.world) {
                     this.world.removeRigidBody(player.body);
@@ -130,6 +152,14 @@ export class Game {
                     player.setButton(button, value);
                 }
             });
+
+            socket.on("use_ability", ({ abilityKey, params }) => {
+                const player = this.players[socket.id];
+
+                if(player && player.abilitySystem) {
+                    player.abilitySystem.useAbility(abilityKey, params);
+                }
+            })
 
             socket.on("send_message", ({ text }) => {
                 let player = this.players[socket.id];
@@ -167,5 +197,46 @@ export class Game {
     sendState() {
         const state = this.getGameState();
         this.io.sockets.emit("sendState", state);
+    }
+
+    /**
+     * Character Selection Methods
+     */
+    getCharacterSelectionInfo() {
+        const characters = CharacterFactory.getAvailableCharacters();
+
+        const info = {};
+
+        characters.forEach(character => {
+            info[character] = CharacterFactory.getCharacterInfo(character);
+        })
+
+        return info;
+    }
+
+    handleCharacterSelection(socket, characterType) {
+        console.log(`Player ${socket.id} selected character: ${characterType}`);
+ 
+        // Validate character type
+        if (!CharacterFactory.CHARACTERS[characterType.toLowerCase()]) {
+            console.warn(`Invalid character type: ${characterType}`);
+            socket.emit("selection_error", "Invalid character selected");
+            return;
+        }
+
+        if(this.world){
+            try {
+                this.players[socket.id] = CharacterFactory.createCharacter(characterType, this, socket);
+                socket.emit("character_selected", { character: characterType });
+                console.log(`Character ${characterType} created for ${socket.id}`);
+            } catch (error) {
+                console.error(`Failed to create character for ${socket.id}:`, error);
+                socket.emit("selection_error", "Failed to create character");
+            }
+        } else {
+            this.pending_sockets[socket.id].selectedCharacter = characterType;
+            socket.emit("character_selected", { character: characterType });
+            console.log(`Character selection stored for pending socket ${socket.id}`);
+        }
     }
 }

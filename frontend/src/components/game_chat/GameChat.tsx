@@ -68,8 +68,11 @@ const GameChat = () => {
                         )}
                     </div>
                     
-                    <GameChatToggle handle_toggle={handle_toggle} isVisible={isVisible}/>
                 </>
+            )}
+
+            { hasVotingEnded && (
+                <GameChatToggle handle_toggle={handle_toggle} isVisible={isVisible}/>
             )}
         </>
     );

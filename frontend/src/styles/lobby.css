@@ -19,12 +19,92 @@
     width: fit-content;
     height: fit-content;
 
-    top: 0rem;
-    left: 0rem;
+    top: 1rem;
+    left: 2.5rem;
 }
 
 .logo_image {
-    width: 20rem;
+    width: 24rem;
+}
+
+/*
+    Lobby Info Container (Mid)
+*/
+.lobby_info_container {
+    z-index: 100;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    top: 15rem;
+    padding: 2rem;
+}
+
+.extra_lobby_info {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.info_text {
+    font-size: 1.2rem;
+    color: white;
+}
+
+.highlight_text {
+    text-shadow: 0 0 10px rgb(0, 72, 255);
+}
+
+.options_menu {
+    width: fit-content;
+    height: fit-content;
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.lobby_option_button {
+    width: 24rem;
+    height: 4rem;
+    border: none;
+    display: flex;
+    align-items: center;
+    background-color: rgba(50, 50, 50, 0.629);
+
+    font-size: 3.3rem;
+    font-weight: 600;
+    color: white;
+    border: 4px solid rgba(0, 0, 0, 0.207);
+    transition: all 0.3s ease-in-out;
+}
+
+.lobby_option_button:hover {
+    transform: scale(1.04) translateX(15px);
+}
+
+.lobby_option_button:active {
+    transform: scale(0.9);
+}
+
+.lobby_option_button div {
+    width: 4rem;
+    height: 3rem;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.play_icon {
+    background-image: url("../../public/play-button.png");
+}
+
+.player_list_icon {
+    background-image: url("../../public/avatar.png");
+}
+
+.vote_icon {
+    background-image: url("../../public/vote.png");
 }
 
 /* 
@@ -74,11 +154,78 @@
 
 .muted_music_button {
     background-image: url("../../public/music_Off.png");
-}  
+}
 
 .settings_toggle {
     background-image: url("../../public/setting.png");
 }
+
+/*
+    Player List
+*/
+.player_list_container {
+    width: 30rem;
+    height: 40rem;
+    background-color: rgba(52, 52, 52, 0.668);
+    z-index: 102;
+    right: 2rem;
+    margin-top: 11rem;
+    padding: 1rem 1rem 1rem 1rem;
+    position: absolute;
+    overflow-y: auto;
+    background-color: rgba(35, 35, 35, 0.558);
+    border: none;
+    box-shadow: 0 0 5px 0 rgb(0, 23, 1);
+    user-select: none;
+    visibility: hidden;
+}
+
+.player_list_header {
+    font-size: 1.4rem;
+    color: white;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgb(255, 255, 255);
+}
+
+.players_container {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.player_list_item_container {
+    width: 100%;
+    height: 2.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.2rem;
+    background-color: rgba(0, 255, 255, 0.459);
+
+    transition: all 0.3s ease-in-out;
+}
+
+.player_list_item {
+    font-size: 1.2rem;
+    color: white;
+}
+
+.player_icon {
+    width: 2rem;
+    height: 1.5rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url("../../public/avatar.png");
+}
+
+.player_list_item_container:hover {
+    transform: scale(1.04);
+}
+
+.player_list_item_container:active {
+    transform: scale(0.9);
+}   
 
 /* 
     Voting Interface
@@ -89,17 +236,18 @@
     justify-content: center;
     flex-direction: column;
     text-align: center;
-    gap: 0.5rem;
+    gap: 1rem;
     left: 50%;
-    top: 60%;
+    top: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
-    height: 80%;
-    background-color: transparent;
+    height: 100%;
+    background-image: url("../../public/background_lobby.jpg");
+    background-repeat: no-repeat;
 }
 
 .vote_header1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
     color: white;
     color: white;
     text-shadow: 0 0 3px blue;
@@ -165,4 +313,19 @@
     font-size: 2rem;
     color: white;
     text-shadow: 1px 0 5px red;
+}
+
+/*
+*
+*
+*  Media Queries
+*
+*
+*/
+@media screen and (max-width: 1000px) {
+    .player_list_container {
+        bottom: 1rem;
+        width: 20rem;
+        height: 25rem;
+    }
 }
