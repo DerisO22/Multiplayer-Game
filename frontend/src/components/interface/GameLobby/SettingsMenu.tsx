@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import '../../../styles/settings_menu.css';
 import { scroll_reveal } from '../../../utils/consts/ScrollReveal';
-import { DEFAULT_SOUND_VALUES } from '../../../contexts/GameSoundsContext';
+import { DEFAULT_SOUND_VALUES, useGameSound } from '../../../contexts/GameSoundsContext';
 
 interface SettingsMenuProps {
     toggleSettings: (e: React.MouseEvent) => void; 
@@ -19,6 +19,7 @@ const SettingsMenu = ({ toggleSettings } : SettingsMenuProps) => {
     // but these are basic visuals for now
     const menuRef = useRef<HTMLDivElement>(null);
     const [ soundValues, setSoundValues ] = useState<SoundSettingsType>(DEFAULT_SOUND_VALUES);
+    const { handleVolumeChange } = useGameSound();
 
     useLayoutEffect(() => {
         if(menuRef.current) {
@@ -33,6 +34,8 @@ const SettingsMenu = ({ toggleSettings } : SettingsMenuProps) => {
     const handleSoundValueChange = (e: React.ChangeEvent<HTMLInputElement>, soundType: string) => {
         const value = parseInt(e.target.value);
         setSoundValues(prev => ({ ...prev, [soundType]: value }));
+
+        handleVolumeChange(soundType, value);
     }
 
     return (
