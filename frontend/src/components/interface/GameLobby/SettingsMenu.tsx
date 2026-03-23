@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import '../../../styles/settings_menu.css';
 import { scroll_reveal } from '../../../utils/consts/ScrollReveal';
+import { DEFAULT_SOUND_VALUES } from '../../../contexts/GameSoundsContext';
 
 interface SettingsMenuProps {
     toggleSettings: (e: React.MouseEvent) => void; 
@@ -10,12 +11,6 @@ interface SoundSettingsType {
     sfx: number,
     music: number,
     other: number
-}
-
-export const DEFAULT_SOUND_VALUES = {
-    sfx: 50,
-    music: 50,
-    other: 50
 }
 
 const SettingsMenu = ({ toggleSettings } : SettingsMenuProps) => {
@@ -58,7 +53,7 @@ const SettingsMenu = ({ toggleSettings } : SettingsMenuProps) => {
                             step={1} 
                             value={soundValues.music}
                             onChange={(e) => handleSoundValueChange(e, "music")}
-                        ></input>       
+                        ></input>
                     </div>
 
                     <div className='sound_input'>
