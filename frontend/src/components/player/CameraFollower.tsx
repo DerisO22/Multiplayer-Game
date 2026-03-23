@@ -12,7 +12,7 @@ export function CameraFollower({ targetRef }: { targetRef: React.RefObject<Mesh>
             const { x, y, z } = targetRef.current.position;
             cameraTarget.current.set(
                 x,
-                y + 5,
+                y + 4,
                 z + 10
             );
             camera.position.lerp(cameraTarget.current, 1 - Math.pow(0.01, delta));
