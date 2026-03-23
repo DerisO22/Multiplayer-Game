@@ -6,6 +6,7 @@ import LobbyMenu from "./LobbyMenu";
 import { useVoting } from "../../../contexts/VotingContext";
 import { useLobby } from "../../../contexts/LobbyContext";
 import PlayerList from "./PlayerList";
+import CharacterSelector from "./CharacterSelector";
 
 const Lobby = () => {
     const { total_players } = useLobby();
@@ -72,6 +73,8 @@ const Lobby = () => {
                         </div>
                         
                     </div>
+
+                    <CharacterSelector />
                     
                     <LobbyMenu />
 
