@@ -1,4 +1,6 @@
-export class Potato {
+import { Player } from "../Player.js";
+
+export class Potato extends Player {
     constructor(game, socket) {
         super(game, socket);
 

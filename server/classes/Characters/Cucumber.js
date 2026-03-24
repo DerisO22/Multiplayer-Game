@@ -1,5 +1,6 @@
-import { SprintAbility } from "./CharacterAbilities/abilities/SprintAbility";
-import { AbilitySystem } from "./CharacterAbilities/AbilitySystem";
+import { SprintAbility } from "./CharacterAbilities/abilities/SprintAbility.js";
+import { AbilitySystem } from "./CharacterAbilities/AbilitySystem.js";
+import { Player } from "../Player.js";
 
 export class Cucumber extends Player {
     constructor(game, socket) {

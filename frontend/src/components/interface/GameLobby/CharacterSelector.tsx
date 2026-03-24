@@ -7,6 +7,8 @@ const CharacterSelector = () => {
     const { characterData, selectedCharacter, handleCharacterSelection } = useCharacterSelect();
     const [ isSelectorVisible, setIsSelectorVisible ] = useState<boolean>(false);
 
+    console.log(characterData)
+
     useLayoutEffect(() => {
         scroll_reveal.reveal('.selector_container', {
             duration: 300,

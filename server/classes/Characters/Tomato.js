@@ -1,4 +1,4 @@
-import { Player } from "../Player";
+import { Player } from "../Player.js";
 
 export class Tomato extends Player {
     constructor(game, socket) {

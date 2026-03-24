@@ -137,8 +137,10 @@
     margin-top: 5rem;
     padding: 2rem;
     display: grid;
-    grid-template-columns: repeat(1, 4fr);
-    gap: 1rem;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
 
     color: white;
 }
@@ -151,6 +153,7 @@
     border: 3px solid black;
     border-radius: 10px;
     box-shadow: 0 0 5px 0 rgb(255, 130, 41);
+    margin: auto;
 
     transition: all 0.3s ease-in-out;
 }

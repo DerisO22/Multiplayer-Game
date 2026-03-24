@@ -13,6 +13,7 @@ export const CharacterSelectionProvider = ({ children }: CharacterSelectionProvi
         if(!socket) return;
 
         socket.on("available_characters", (payload) => {
+            console.log(payload)
             setCharacterData(payload);
         });
 

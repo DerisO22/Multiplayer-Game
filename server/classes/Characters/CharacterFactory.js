@@ -1,8 +1,14 @@
 import { Carrot } from "./Carrot.js";
+import { Cucumber } from "./Cucumber.js";
+import { Potato } from "./Potato.js";
+import { Tomato } from "./Tomato.js";
 
 export class CharacterFactory {
     static CHARACTERS = {
         carrot: Carrot,
+        cucumber: Cucumber,
+        potato: Potato,
+        tomato: Tomato
     }
 
     static createCharacter(characterType, game, socket) {
