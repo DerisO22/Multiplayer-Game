@@ -7,8 +7,6 @@ const CharacterSelector = () => {
     const { characterData, selectedCharacter, handleCharacterSelection } = useCharacterSelect();
     const [ isSelectorVisible, setIsSelectorVisible ] = useState<boolean>(false);
 
-    console.log(characterData)
-
     useLayoutEffect(() => {
         scroll_reveal.reveal('.selector_container', {
             duration: 300,
@@ -34,8 +32,8 @@ const CharacterSelector = () => {
                     <h1 className="header1">Veggie Selector</h1>
 
                     <div className="cards_container">
-                        {characterData.characters.map((character) => (
-                            <div className="character_card">
+                        {characterData.characters.map((character, index) => (
+                            <div key={index} className="character_card">
                                 <h1>{character}</h1>
                             </div>
                         ))}
