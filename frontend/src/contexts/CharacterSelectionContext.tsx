@@ -1,32 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useSocket } from "./useSocket";
-
-interface CharacterInfo {  
-    [key: string]: {
-        name: string,
-        description: string,
-        color: number,
-        abilities: string[],
-        playstyle: string
-    }
-}
-
-interface CharacterPayloadData{
-    characters: string[],
-    characterInfo: CharacterInfo
-}
-
-interface CharacterSelectionContextType {
-    characterData: CharacterPayloadData | undefined,
-    selectedCharacter: string | undefined,
-    handleCharacterSelection: (characterType: string) => void
-}
+import type { CharacterSelectionContextType, CharacterPayloadData, CharacterInfo, CharacterSelectionProviderProps } from "../utils/types/lobbyTypes";
 
 const CharacterSelectionContext = createContext<CharacterSelectionContextType | undefined>(undefined);
-
-interface CharacterSelectionProviderProps {
-    children: React.ReactNode
-}
 
 export const CharacterSelectionProvider = ({ children }: CharacterSelectionProviderProps) => {
     const { socket } = useSocket();
