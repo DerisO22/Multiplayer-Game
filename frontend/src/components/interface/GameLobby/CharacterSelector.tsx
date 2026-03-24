@@ -1,24 +1,26 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { useCharacterSelect } from "../../../contexts/CharacterSelectionContext";
 import '../../../styles/character_selector.css';
+import { scroll_reveal } from "../../../utils/consts/ScrollReveal";
 
 const CharacterSelector = () => {
     const { characterData, selectedCharacter, handleCharacterSelection } = useCharacterSelect();
-    const [ isSelectorVisible, setIsSelectorVisible ] = useState<boolean>(true);
+    const [ isSelectorVisible, setIsSelectorVisible ] = useState<boolean>(false);
 
-    useEffect(() => {
-        if(!characterData) return;
-
-        characterData.characters.map((val) => {
-            console.log(val);
-        })
-    })
+    useLayoutEffect(() => {
+        scroll_reveal.reveal('.selector_container', {
+            duration: 300,
+            distance: '0px',
+            scale: 0.98
+        });
+    }, [isSelectorVisible]);
 
     return (
         <>
             <div className="character_info_panel">
                 <div className="character_icon" />
                 <div className="character_underline"/>
+                <div className="info_text">Current Class: {selectedCharacter}</div>
                 <button className="choose_player_button" onClick={() => setIsSelectorVisible(prev => !prev)}>
                     <div className="carrot_icon"></div>
                     <span>Choose Player</span>
@@ -27,16 +29,21 @@ const CharacterSelector = () => {
 
             {isSelectorVisible && characterData && (
                 <div className="selector_container">
-                    {characterData.characters.map((character) => (
-                        <div className="character_card_container">
-                            <h1>{character}</h1>
-                        </div>
-                    ))}
+                    <h1 className="header1">Veggie Selector</h1>
+
+                    <div className="cards_container">
+                        {characterData.characters.map((character) => (
+                            <div className="character_card">
+                                <h1>{character}</h1>
+                            </div>
+                        ))}
+                    </div>
+
+                    <button className="exit_selector_button" onClick={() => setIsSelectorVisible(prev => !prev)}>X</button>
                 </div>
             )}
         </>
-        
     )
 }
 
-export default CharacterSelector
+export default CharacterSelector;

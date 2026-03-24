@@ -31,7 +31,7 @@ interface CharacterSelectionProviderProps {
 export const CharacterSelectionProvider = ({ children }: CharacterSelectionProviderProps) => {
     const { socket } = useSocket();
     const [ characterData, setCharacterData ] = useState<CharacterPayloadData | undefined>();
-    const [ selectedCharacter, setSelectedCharacter ] = useState<string | undefined>();
+    const [ selectedCharacter, setSelectedCharacter ] = useState<string | undefined>("carrot");
 
     useEffect(() => {
         if(!socket) return;
