@@ -1,4 +1,6 @@
 import { Player } from "../Player.js";
+import { SprintAbility } from "./CharacterAbilities/abilities/SprintAbility.js";
+import { AbilitySystem } from "./CharacterAbilities/AbilitySystem.js";
 
 export class Potato extends Player {
     constructor(game, socket) {
