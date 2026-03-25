@@ -21,8 +21,7 @@ export const CharacterSelectionProvider = ({ children }: CharacterSelectionProvi
         }
     }, [socket])
 
-    const handleCharacterSelection = (e: React.MouseEvent<HTMLDivElement>, characterType: string) => {
-        e.preventDefault();
+    const handleCharacterSelection = (characterType: string) => {
         setSelectedCharacter(characterType);
         socket?.emit("select_character", { character: characterType });
     }

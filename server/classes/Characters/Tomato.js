@@ -1,4 +1,5 @@
 import { Player } from "../Player.js";
+import AbilitySystem from './CharacterAbilities/AbilitySystem.js'
 
 export class Tomato extends Player {
     constructor(game, socket) {

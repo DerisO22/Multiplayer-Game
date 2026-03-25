@@ -33,7 +33,7 @@ const CharacterSelector = () => {
 
                     <div className="cards_container">
                         {characterData.characters.map((character, index) => (
-                            <div onClick={(e) => {handleCharacterSelection(e, character)}} key={index} className={`character_card ${selectedCharacter === character ? "active" : ""}`}>
+                            <div onClick={() => {handleCharacterSelection(character)}} key={index} className={`character_card ${selectedCharacter === character ? "active" : ""}`}>
                                 <h1>{character}</h1>
                             </div>
                         ))}
