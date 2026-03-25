@@ -34,7 +34,7 @@ export interface CharacterSelectionContextType {
     characterData: CharacterPayloadData | undefined,
     selectedCharacter: string | undefined,
     setSelectedCharacter: React.Dispatch<React.SetStateAction<string | undefined>>
-    handleCharacterSelection: (characterType: string) => void
+    handleCharacterSelection: (e: React.MouseEvent<HTMLDivElement>,characterType: string) => void
 }
 
 export interface CharacterSelectionProviderProps {

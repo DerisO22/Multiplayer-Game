@@ -15,8 +15,6 @@ const CharacterSelector = () => {
         });
     }, [isSelectorVisible]);
 
-    console.log(selectedCharacter);
-
     return (
         <>
             <div className="character_info_panel">
@@ -35,7 +33,7 @@ const CharacterSelector = () => {
 
                     <div className="cards_container">
                         {characterData.characters.map((character, index) => (
-                            <div onClick={() => setSelectedCharacter(character)} key={index} className={`character_card ${selectedCharacter === character ? "active" : ""}`}>
+                            <div onClick={(e) => {handleCharacterSelection(e, character)}} key={index} className={`character_card ${selectedCharacter === character ? "active" : ""}`}>
                                 <h1>{character}</h1>
                             </div>
                         ))}
