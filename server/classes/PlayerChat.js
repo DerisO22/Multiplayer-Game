@@ -9,6 +9,7 @@
  * 
  */
 import { HelpCommandMessage } from "../utils/consts.js";
+import { InputValidator } from "../utils/InputValidator.js";
 
 export class PlayerChat {
     constructor (player, socket) {
@@ -102,8 +103,18 @@ export class PlayerChat {
         }
     }
 
-    handle_nickname_command(newNickname) {
-        this.player.setNickname(newNickname.join(" "));
+    handle_nickname_command(args) {
+        const newNickname = args.join(" ");
+        
+        // Validate nickname
+        const validation = InputValidator.validateNickname(newNickname);
+        if (!validation.valid) {
+            this.player.socket.emit("error", validation.error);
+            return;
+        }
+    
+        this.player.setNickname(validation.nickname);
+        this.player.socket.emit("nickname_changed", { nickname: validation.nickname });
     }
 
     handle_color_command(color) {

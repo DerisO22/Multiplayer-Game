@@ -13,7 +13,7 @@ const Abilities = () => {
         if(!selectedCharacter) return;
 
         setCharacterAbilities(ABILITY_MAP[selectedCharacter])
-    }, []);
+    }, [selectedCharacter]);
 
     return (
         <>
