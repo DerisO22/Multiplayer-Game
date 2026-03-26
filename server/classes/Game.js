@@ -193,6 +193,14 @@ export class Game {
                     socket.emit("error", validation.error);
                     return;
                 }
+
+                // Verify cooldown on server (don't trust client)
+                const ability = player.abilitySystem.abilities[abilityKey];
+                const cooldownCheck = InputValidator.verifyCooldown(ability);
+                if (!cooldownCheck.valid) {
+                    socket.emit("error", cooldownCheck.error);
+                    return;
+                }
             
                 // Rate limit
                 if(!this.abilityRateLimit.isAllowed(socket.id)){
@@ -212,7 +220,7 @@ export class Game {
                     socket.emit("error", validation.error);
                     return;
                 }
-                
+
                 // rate limit
                 if(!this.chatRateLimit.isAllowed(socket.id)){
                     console.log("Hit chatting rate limit!");

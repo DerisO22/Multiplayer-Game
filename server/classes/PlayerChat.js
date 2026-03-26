@@ -88,19 +88,22 @@ export class PlayerChat {
 
         const targets = targetString.split(',').map((username) => username.trim());
 
-        const targetPlayers = targets.map((targetName) => {
-            return Object.values(this.player.game.players)
-            .find(p => p.nickname === targetName)
-        }).filter(p => p);
-
-        if(targetPlayers) {
-            targetPlayers.map((target) => {
-                target.socket.emit("whisper_command", {
-                    from: this.player.nickname,
-                    text: message
-                });
-            })
+        // Validate whisper
+        const validation = InputValidator.validateWhisperCommand(targetString, message, this.player.game);
+        if (!validation.valid) {
+            this.player.socket.emit("error", validation.error);
+            return;
         }
+
+        // Sanitize message
+        const sanitizedMessage = InputValidator.sanitizeMessage(validation.message);
+
+        validation.targetPlayers.forEach((target) => {
+            target.socket.emit("whisper_command", {
+                from: this.player.nickname,
+                text: sanitizedMessage
+            });
+        });
     }
 
     handle_nickname_command(args) {
@@ -127,9 +130,11 @@ export class PlayerChat {
     }
 
     broadcast_message(text) {
+        const sanitizedText = InputValidator.sanitizeMessage(text);
+
         const broadcast_message = {
             from: this.player.nickname,
-            text: text,
+            text: sanitizedText,
             time: Date.now(),
         };
 
