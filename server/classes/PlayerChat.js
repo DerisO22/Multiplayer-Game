@@ -9,6 +9,7 @@
  * 
  */
 import { HelpCommandMessage } from "../utils/consts.js";
+import { InputValidator } from "../utils/InputValidator.js";
 
 export class PlayerChat {
     constructor (player, socket) {
@@ -87,23 +88,36 @@ export class PlayerChat {
 
         const targets = targetString.split(',').map((username) => username.trim());
 
-        const targetPlayers = targets.map((targetName) => {
-            return Object.values(this.player.game.players)
-            .find(p => p.nickname === targetName)
-        }).filter(p => p);
-
-        if(targetPlayers) {
-            targetPlayers.map((target) => {
-                target.socket.emit("whisper_command", {
-                    from: this.player.nickname,
-                    text: message
-                });
-            })
+        // Validate whisper
+        const validation = InputValidator.validateWhisperCommand(targetString, message, this.player.game);
+        if (!validation.valid) {
+            this.player.socket.emit("error", validation.error);
+            return;
         }
+
+        // Sanitize message
+        const sanitizedMessage = InputValidator.sanitizeMessage(validation.message);
+
+        validation.targetPlayers.forEach((target) => {
+            target.socket.emit("whisper_command", {
+                from: this.player.nickname,
+                text: sanitizedMessage
+            });
+        });
     }
 
-    handle_nickname_command(newNickname) {
-        this.player.setNickname(newNickname.join(" "));
+    handle_nickname_command(args) {
+        const newNickname = args.join(" ");
+        
+        // Validate nickname
+        const validation = InputValidator.validateNickname(newNickname);
+        if (!validation.valid) {
+            this.player.socket.emit("error", validation.error);
+            return;
+        }
+    
+        this.player.setNickname(validation.nickname);
+        this.player.socket.emit("nickname_changed", { nickname: validation.nickname });
     }
 
     handle_color_command(color) {
@@ -116,9 +130,11 @@ export class PlayerChat {
     }
 
     broadcast_message(text) {
+        const sanitizedText = InputValidator.sanitizeMessage(text);
+
         const broadcast_message = {
             from: this.player.nickname,
-            text: text,
+            text: sanitizedText,
             time: Date.now(),
         };
 

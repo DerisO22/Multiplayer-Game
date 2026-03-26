@@ -1,15 +1,17 @@
 import { Player } from "../Player.js";
 import { SprintAbility } from "./CharacterAbilities/abilities/SprintAbility.js";
+import { SuperJumpAbility } from "./CharacterAbilities/abilities/SuperJumpAbilitiy.js";
 import { AbilitySystem } from "./CharacterAbilities/AbilitySystem.js";
 
 export class Potato extends Player {
     constructor(game, socket) {
-        super(game, socket);
+        super(game, socket, { x: .8, y: .8, z: .8 });
 
         this.character = "potato";
-        this.characterColor = 0xFFFFFF;
+        this.characterColor = 0xF4ECB5;
         this.abilitySystem = new AbilitySystem(this);
         this.abilitySystem.addAbility("sprint", new SprintAbility())
+        this.abilitySystem.addAbility("super_jump", new SuperJumpAbility());
     }
 
     update() {

@@ -1,13 +1,14 @@
 global.self = global;
 import RAPIER from "@dimforge/rapier3d-compat";
-import { Player } from "./Player.js";
 import { World } from "./GameWorld/World.js";
 import { GameState } from "./GameState.js";
 import { Lobby } from "./Lobby.js";
 import { CharacterFactory } from "./Characters/CharacterFactory.js";
+import { RateLimiter } from "../utils/RateLimiter.js";
+import { InputValidator } from "../utils/InputValidator.js";
 
 const GRAVITY_CONST = -18.81;
-const NEEDED_PLAYERS = 5;
+const NEEDED_PLAYERS = 1;
 
 export class Game {
     constructor(io) {
@@ -18,6 +19,16 @@ export class Game {
         this.GameState = new GameState(io);
         this.Lobby = new Lobby(io);
         this.is_game_running = false;
+
+        /**
+         * Rate Limiters for Socket Listeners
+         */
+        //          Chat - 03 messages/second
+        // Button inputs - 25 presses/second
+        // ability usage - 10 per second
+        this.chatRateLimit = new RateLimiter(3, 1000);
+        this.buttonRateLimit = new RateLimiter(25, 1000);
+        this.abilityRateLimit = new RateLimiter(10, 1000);
     }
 
     async startGame() {
@@ -143,9 +154,27 @@ export class Game {
                     delete this.pending_sockets[socket.id];
                     console.log(`Removed pending socket ${socket.id}`);
                 }
+
+                // clean up ratelimits
+                delete this.chatRateLimit.requests[socket.id];
+                delete this.buttonRateLimit.requests[socket.id];
+                delete this.abilityRateLimit.requests[socket.id];
             });
 
             socket.on("setButton", ({ button, value }) => {
+                // input val
+                const validation = InputValidator.validateButton(button, value);
+                if(!validation.valid) {
+                    console.warn(`Button validation failed: ${validation.error}`);
+                    return;
+                }
+
+                // rate limit
+                if(!this.buttonRateLimit.isAllowed(socket.id)){
+                    console.log("Hit button rate limit!");
+                    return;
+                }
+
                 let player = this.players[socket.id];
 
                 if (player) {
@@ -155,6 +184,28 @@ export class Game {
 
             socket.on("use_ability", ({ abilityKey, params }) => {
                 const player = this.players[socket.id];
+                if (!player) return;
+            
+                // Validate ability key
+                const validation = InputValidator.validateAbilityKey(abilityKey, player);
+                if (!validation.valid) {
+                    console.warn(`Ability validation failed: ${validation.error}`);
+                    socket.emit("error", validation.error);
+                    return;
+                }
+
+                // Verify cooldown on server (don't trust client)
+                const ability = player.abilitySystem.abilities[abilityKey];
+                const cooldownCheck = InputValidator.verifyCooldown(ability);
+                if (!cooldownCheck.valid) {
+                    socket.emit("error", cooldownCheck.error);
+                    return;
+                }
+            
+                // Rate limit
+                if(!this.abilityRateLimit.isAllowed(socket.id)){
+                    return;
+                }
 
                 if(player && player.abilitySystem) {
                     player.abilitySystem.useAbility(abilityKey, params);
@@ -162,6 +213,20 @@ export class Game {
             })
 
             socket.on("send_message", ({ text }) => {
+                // check message
+                const validation = InputValidator.validateChatMessage(text);
+                if (!validation.valid) {
+                    console.warn(`Message validation failed: ${validation.error}`);
+                    socket.emit("error", validation.error);
+                    return;
+                }
+
+                // rate limit
+                if(!this.chatRateLimit.isAllowed(socket.id)){
+                    console.log("Hit chatting rate limit!");
+                    return;
+                }
+
                 let player = this.players[socket.id];
 
                 if (player) {

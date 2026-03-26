@@ -1,16 +1,19 @@
 import { Player } from "../Player.js";
+import { ForwardDash } from "./CharacterAbilities/abilities/ForwardDash.js";
 import { SprintAbility } from "./CharacterAbilities/abilities/SprintAbility.js";
 import { AbilitySystem } from "./CharacterAbilities/AbilitySystem.js";
 
 export class Carrot extends Player {
     constructor(game, socket) {
-        super(game, socket);
+        // the {x, y, z} is this character's base move speed!!
+        super(game, socket, { x: 1.3, y: 1.3, z: 1.3 });
 
         this.character = "carrot";
         this.characterColor = 0xff9800;
 
         this.abilitySystem = new AbilitySystem(this);
         this.abilitySystem.addAbility("sprint", new SprintAbility());
+        this.abilitySystem.addAbility("forward_dash", new ForwardDash());
     }
 
     update() {

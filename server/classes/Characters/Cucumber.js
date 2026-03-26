@@ -1,15 +1,17 @@
 import { SprintAbility } from "./CharacterAbilities/abilities/SprintAbility.js";
 import { AbilitySystem } from "./CharacterAbilities/AbilitySystem.js";
 import { Player } from "../Player.js";
+import { ForwardDash } from "./CharacterAbilities/abilities/ForwardDash.js";
 
 export class Cucumber extends Player {
     constructor(game, socket) {
-        super(game, socket);
+        super(game, socket, { x: 1, y: 1, z: 1 });
 
         this.character = "cucumber";
-        this.characterColor = 0xFFFFFF;
+        this.characterColor = 0x67ab05;
         this.abilitySystem = new AbilitySystem(this);
-        this.abilitySystem.addAbility("sprint", new SprintAbility())
+        this.abilitySystem.addAbility("sprint", new SprintAbility());
+        this.abilitySystem.addAbility("forward_dash", new ForwardDash());
     }
 
     update() {
