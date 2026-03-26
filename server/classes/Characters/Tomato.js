@@ -1,5 +1,6 @@
 import { Player } from "../Player.js";
 import { SprintAbility } from "./CharacterAbilities/abilities/SprintAbility.js";
+import { SuperJumpAbility } from "./CharacterAbilities/abilities/SuperJumpAbilitiy.js";
 import { AbilitySystem } from "./CharacterAbilities/AbilitySystem.js";
 
 export class Tomato extends Player {

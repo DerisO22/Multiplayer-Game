@@ -1,5 +1,6 @@
 import { Player } from "../Player.js";
 import { SprintAbility } from "./CharacterAbilities/abilities/SprintAbility.js";
+import { SuperJumpAbility } from "./CharacterAbilities/abilities/SuperJumpAbilitiy.js";
 import { AbilitySystem } from "./CharacterAbilities/AbilitySystem.js";
 
 export class Potato extends Player {
@@ -10,6 +11,7 @@ export class Potato extends Player {
         this.characterColor = 0xF4ECB5;
         this.abilitySystem = new AbilitySystem(this);
         this.abilitySystem.addAbility("sprint", new SprintAbility())
+        this.abilitySystem.addAbility("super_jump", new SuperJumpAbility());
     }
 
     update() {
