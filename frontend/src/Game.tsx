@@ -11,10 +11,32 @@ import { useEffect, useState } from 'react'
 import { useSocket } from './contexts/useSocket'
 import { useKeyboardControls } from './utils/custom_hooks/useKeyboardControls'
 
+/**
+ * Authentication Imports
+ */
+import { useUser } from '@clerk/clerk-react';
+import { getAllPlayerInformation } from './services/playerService'
+
 const Game = () => {
     const { socket, isConnected } = useSocket();
     useKeyboardControls();
     const [cameraMode, setCameraMode] = useState<'follow' | 'orbit'>('follow');
+    const { user } = useUser();
+
+    useEffect(() => {
+        if(!user?.id) return;
+
+        fetchPlayerData(user?.id)
+    }, [user?.id]);
+
+    const fetchPlayerData = async(player_clerk_id: string) => {
+        try {   
+            const data = await getAllPlayerInformation(player_clerk_id);
+            console.log(data);
+        } catch (err) {
+            console.error("failed to load player data: ", err);
+        }
+    }
 
     useEffect(() => {
         console.log("isConnected: ", isConnected);
