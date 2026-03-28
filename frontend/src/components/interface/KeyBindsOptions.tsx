@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAbilities, type KeybindChanges } from "../../contexts/AbilitiesContext";
+import { DEFAULT_KEYBINDS } from "../../utils/consts/Keybinds";
 
 const KeyBindsOptions = () => {
     const { playerKeybinds, updatePlayerKeybinds } = useAbilities();
@@ -9,6 +10,11 @@ const KeyBindsOptions = () => {
     const handleKeybindChange = (setting: string) => {
         setIsUpdateKeybindVisible(true);
         setUpdatedKeybind(setting);
+    }
+
+    const resetKeyBinds = () => {
+        console.log("Hello");
+        updatePlayerKeybinds(DEFAULT_KEYBINDS);
     }
 
     useEffect(() => {
@@ -43,9 +49,13 @@ const KeyBindsOptions = () => {
                 </div>
             ))} 
 
+            <div onClick={() => resetKeyBinds()} className="keybind_setting reset_button">
+                Reset Keybinds
+            </div>
+
             {isUpdateKeybindVisible && (
                 <div className="update_keybind_alert">
-                    Click on a Key to Change Keybind {updatedKeybind}
+                    Click on a Key to Change Keybind <strong>"{updatedKeybind}"</strong>
                 </div>
             )}
         </div>
