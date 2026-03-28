@@ -1,3 +1,5 @@
+import type { PlayerDataType } from "../contexts/PlayerContext";
+
 const API_URL: string = (import.meta.env.VITE_NODE_ENVIRONMENT === "production") ? 
     import.meta.env.VITE_PROD_URL :
     import.meta.env.VITE_DEV_URL;
@@ -24,7 +26,7 @@ export const getAllPlayerInformation = async(player_clerk_id: string) => {
     }   
 }
 
-export const savePlayerInformation = async(player_data: any) => {
+export const savePlayerInformation = async(player_data: PlayerDataType) => {
     try {
         const res = await fetch(`${API_URL}/players/${player_data.player_clerk_id}`, {
             method: "PUT",
