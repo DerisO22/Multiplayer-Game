@@ -3,7 +3,8 @@ import '../../../styles/settings_menu.css';
 import { scroll_reveal } from '../../../utils/consts/ScrollReveal';
 import { DEFAULT_SOUND_VALUES, useGameSound } from '../../../contexts/GameSoundsContext';
 import KeyBindsOptions from '../KeyBindsOptions';
-import { SignOutButton } from '@clerk/clerk-react';
+import { SignOutButton, UserProfile } from '@clerk/clerk-react';
+import { dark } from '@clerk/themes';
 
 interface SettingsMenuProps {
     toggleSettings: (e: React.MouseEvent) => void; 
@@ -42,7 +43,10 @@ const SettingsMenu = ({ toggleSettings } : SettingsMenuProps) => {
 
     return (
         <div ref={menuRef} className='settings_menu'>
-            <h1 className='header1'>Game Settings</h1>
+            <div className="settings_menu_header">
+                <h1 className='header1'>Game Settings</h1>
+                <button onClick={toggleSettings} className='exit_settings_button'>X</button>
+            </div>
 
             {/* This will prob be a 2x2 grid container */}
             <div className='controls_container'>
@@ -89,16 +93,22 @@ const SettingsMenu = ({ toggleSettings } : SettingsMenuProps) => {
                 {/* Keyboard Controls */}
                 {/*                   */}
                 <KeyBindsOptions />
-
-                {/*       */}
-                {/* Login */}
-                {/*       */}
-                <div className="auth_settings_container">
-                    <SignOutButton />
-                </div>
             </div>
 
-            <button onClick={toggleSettings} className='exit_settings_button'>X</button>
+            {/*       */}
+            {/* Login */}
+            {/*       */}
+            <div className="auth_settings_container">
+                <UserProfile 
+                    appearance={{
+                        theme: dark
+                    }}
+                />
+
+                <SignOutButton>
+                    <button className='clerk_signout_button'>Sign Out</button>
+                </SignOutButton>
+            </div>
         </div>
     );
 }
