@@ -16,6 +16,11 @@ import initializeDatabase from './database/db.js';
 const client = createClient();
 dotenv.config();
 
+/**
+ * Routers
+ */
+import playerRoutes from "./routes/players.js";
+
 // config
 const PORT = process.env.PORT || 3001;
 const FRAME_TIME = Math.floor(1000 / 60);
@@ -43,14 +48,23 @@ async function start() {
         console.log(`Listening on port ${PORT}`);
     })
 
+    /* Database */
     try {
         await initializeDatabase(client);
     } catch (err) {
         console.error("Failed to initialize database schema: ", err);
     }
-    
-    const game = new Game(io);
 
+    /* Routing */
+    app.use((req, res, next) => {
+        req.pgClient = client;
+        next();
+    })
+    
+    app.use('/players', playerRoutes);
+    
+    /* Game Stuffs */
+    const game = new Game(io);
     await game.startGame();
 
     setInterval(() => {
