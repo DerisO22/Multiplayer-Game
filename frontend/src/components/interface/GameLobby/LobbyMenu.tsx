@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSocket } from "../../../contexts/useSocket";
 import { scroll_reveal } from "../../../utils/consts/ScrollReveal";
 import SettingsMenu from "./SettingsMenu";
+import { SignOutButton } from "@clerk/clerk-react";
 
 const LobbyMenu = () => {
     const { socket } = useSocket();
@@ -54,7 +55,9 @@ const LobbyMenu = () => {
                 </div>
 
                 <div className="menu_button_container">
-                    <button onClick={handlePlayerExit} className={`menu_button exit_toggle`}></button>
+                    <SignOutButton>
+                        <button className={`menu_button exit_toggle`}></button>
+                    </SignOutButton>
                 </div>
             </div>
 
