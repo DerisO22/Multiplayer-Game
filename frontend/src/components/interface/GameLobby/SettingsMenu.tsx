@@ -5,7 +5,6 @@ import { DEFAULT_SOUND_VALUES, useGameSound } from '../../../contexts/GameSounds
 import KeyBindsOptions from '../KeyBindsOptions';
 import { SignOutButton, UserProfile } from '@clerk/clerk-react';
 import { dark } from '@clerk/themes';
-import { useAbilities } from '../../../contexts/AbilitiesContext';
 import { usePlayerData } from '../../../contexts/PlayerContext';
 
 interface SettingsMenuProps {
