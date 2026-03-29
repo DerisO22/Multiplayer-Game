@@ -15,28 +15,21 @@ import { useKeyboardControls } from './utils/custom_hooks/useKeyboardControls'
  * Authentication Imports
  */
 import { useUser } from '@clerk/clerk-react';
-import { getAllPlayerInformation } from './services/playerService'
+import { getAllPlayerInformation } from './services/playerService';
+import { usePlayerData } from './contexts/PlayerContext'
 
 const Game = () => {
     const { socket, isConnected } = useSocket();
     useKeyboardControls();
     const [cameraMode, setCameraMode] = useState<'follow' | 'orbit'>('follow');
     const { user } = useUser();
+    const { get_player_data } = usePlayerData();
 
     useEffect(() => {
         if(!user?.id) return;
 
-        fetchPlayerData(user?.id)
+        get_player_data(user?.id);
     }, [user?.id]);
-
-    const fetchPlayerData = async(player_clerk_id: string) => {
-        try {   
-            const data = await getAllPlayerInformation(player_clerk_id);
-            console.log(data);
-        } catch (err) {
-            console.error("failed to load player data: ", err);
-        }
-    }
 
     useEffect(() => {
         console.log("isConnected: ", isConnected);
@@ -68,9 +61,9 @@ const Game = () => {
                     count={1000} 
                     factor={1.2} 
                     saturation={10} 
-                    fade={true}
+                    fade={true} 
                     speed={1}
-                />      
+                /> 
 
                 {/* Environment */}
                 <Scene cameraMode={cameraMode} />
@@ -93,4 +86,4 @@ const Game = () => {
     )
 }
 
-export default Game
+export default Game;

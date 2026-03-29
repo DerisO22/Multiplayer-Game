@@ -1,10 +1,11 @@
 import { createContext, useContext, useState } from "react";
 import type { KeyBindings } from "../utils/types/controlType";
 import type { PlayerSounds, PlayerStats } from "../utils/types/player";
+import { getAllPlayerInformation } from "../services/playerService";
 
 export interface PlayerContextType {
     playerData: PlayerDataType | undefined
-    get_player_data: (player_clerk_id: number) => void,
+    get_player_data: (player_clerk_id: string) => void,
     save_player_data: () => void
 }
 
@@ -24,8 +25,13 @@ const PlayerContext = createContext<PlayerContextType | undefined>(undefined);
 export const PlayerProvider = ({ children } : PlayerProviderPropsType) => {
     const [ playerData, setPlayerData ] = useState<PlayerDataType | undefined>();
 
-    const get_player_data = (player_clerk_id: number) => {
-
+    const get_player_data = async(player_clerk_id: string) => {
+        try {   
+            const data = await getAllPlayerInformation(player_clerk_id);
+            console.log(data);
+        } catch (err) {
+            console.error("failed to load player data: ", err);
+        }
     }
 
     const save_player_data = () => {
