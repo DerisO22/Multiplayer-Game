@@ -15,7 +15,6 @@ import { useKeyboardControls } from './utils/custom_hooks/useKeyboardControls'
  * Authentication Imports
  */
 import { useUser } from '@clerk/clerk-react';
-import { getAllPlayerInformation } from './services/playerService';
 import { usePlayerData } from './contexts/PlayerContext'
 
 const Game = () => {
