@@ -54,7 +54,7 @@ export const PlayerProvider = ({ children } : PlayerProviderPropsType) => {
     const [ playerData, setPlayerData ] = useState<PlayerDataType | undefined>();
 
     const get_player_data = async(player_clerk_id: string) => {
-        try {   
+        try {
             const data = await getAllPlayerInformation(player_clerk_id);
             console.log(data);
 
