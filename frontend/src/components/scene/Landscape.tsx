@@ -18,7 +18,7 @@ const Landscape = () => {
             child.castShadow = true;
             child.matrixWorldNeedsUpdate = true;
         })
-    }, [landscape]);
+    }, []);
 
     return (
         <>

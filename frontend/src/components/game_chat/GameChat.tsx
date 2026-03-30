@@ -12,10 +12,6 @@ const GameChat = () => {
     const chatPayload = usePlayerChat(socket);
     const [ isVisible, setIsVisible ] = useState<boolean>(true);
 
-    useEffect(() => {
-        console.log(chatPayload);
-    }, [chatPayload]);
-
     const formatDate = (time: number) => {
         const timeObject = new Date(time);
 
@@ -32,7 +28,6 @@ const GameChat = () => {
     };
 
     const handle_toggle = (e: React.MouseEvent) => {
-        console.log(isVisible)
         e.preventDefault();
         setIsVisible(prev => !prev);
     }

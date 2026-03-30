@@ -27,6 +27,10 @@
     transition: all 0.1s ease-in-out;
 }
 
+.abilities_card.active-ability {
+    background-color: rgba(0, 0, 0, 0.13);
+}
+
 .abilities_card.card0 {
     width: 9rem;
     height: 9rem;

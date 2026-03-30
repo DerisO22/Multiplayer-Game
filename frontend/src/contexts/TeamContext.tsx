@@ -41,7 +41,7 @@ export const TeamProvider = ({ children }: TeamProviderProps) => {
         setBlueTeam(gameState.teamInfo.blue);
         setRedScore(gameState.teamInfo.teamScores.red);
         setBlueScore(gameState.teamInfo.teamScores.blue);
-    }, [gameState.teamInfo]);
+    }, [gameState.teamInfo?.red, gameState.teamInfo?.blue, gameState.teamInfo?.teamScores]);
 
     // Get local player's team
     const localPlayerTeam = gameState.players.find(

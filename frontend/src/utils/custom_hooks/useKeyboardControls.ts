@@ -46,7 +46,7 @@ export const useKeyboardControls = () => {
                     const element = abilityButtonRefs.current[abilityName];
                 
                     if (element) {
-                        element.style.backgroundColor = "rgba(0, 0, 0, 0.13)"; 
+                        element.classList.add('active-ability');
                     }
 
                     socket.emit('use_ability', { abilityKey: characterAbilities.ability1 })
@@ -56,7 +56,7 @@ export const useKeyboardControls = () => {
                     const element = abilityButtonRefs.current[abilityName];
                 
                     if (element) {
-                        element.style.backgroundColor = "rgba(0, 0, 0, 0.13)"; 
+                        element.classList.add('active-ability');
                     }
 
                     socket.emit('use_ability', { abilityKey: characterAbilities.ability2 })
@@ -81,7 +81,7 @@ export const useKeyboardControls = () => {
                 const element = abilityButtonRefs.current[abilityName];
             
                 if (element) {
-                    element.style.backgroundColor = "rgba(0, 0, 0, 0.43)"; 
+                    element.classList.remove("active-ability");
                 }
             }
 
@@ -90,7 +90,7 @@ export const useKeyboardControls = () => {
                 const element = abilityButtonRefs.current[abilityName];
             
                 if (element) {
-                    element.style.backgroundColor = "rgba(0, 0, 0, 0.43)"; 
+                    element.classList.remove("active-ability"); 
                 }
             }
         };

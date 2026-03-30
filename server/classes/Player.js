@@ -57,8 +57,6 @@ export class Player {
         this.body = this.game.world.createRigidBody(bodyDesc);
 
         let colliderDesc = RAPIER.ColliderDesc.capsule(0.5, 0.5);
-        this.game.world.createCollider(colliderDesc, this.body);
-
         this.collider = this.game.world.createCollider(colliderDesc, this.body);
 
         // Team & Stats

@@ -294,7 +294,7 @@ export class Game {
     sendState() {
         const state = this.getGameState();
 
-        if(this.teamInfoCounter++ % 30 !== 0) {
+        if(this.teamInfoCounter++ % 10 !== 0) {
             delete state.teamInfo;
         }
 
