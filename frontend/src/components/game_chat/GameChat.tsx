@@ -55,11 +55,11 @@ const GameChat = () => {
                                     </div>
                                 ))}
 
-                                {chatPayload && chatPayload.whisper_messages.map((message, index) => {
+                                {chatPayload && chatPayload.whisper_messages.map((message, index) => (
                                     <div key={message.from + index} className="message">
 
                                     </div>
-                                })}
+                                ))}
                             </>
                         </div>
                         

@@ -10,7 +10,6 @@ import { InputValidator } from "../utils/InputValidator.js";
 
 const GRAVITY_CONST = -18.81;
 const NEEDED_PLAYERS = 1;
-let teamInfoCounter = 0;
 
 export class Game {
     constructor(io) {
@@ -23,6 +22,7 @@ export class Game {
         this.TeamManager = new TeamManager(4);
         this.Lobby = new Lobby(io);
         this.is_game_running = false;
+        this.teamInfoCounter = 0;
 
         /**
          * Rate Limiters for Socket Listeners
@@ -294,7 +294,7 @@ export class Game {
     sendState() {
         const state = this.getGameState();
 
-        if(teamInfoCounter++ % 10 !== 0) {
+        if(this.teamInfoCounter++ % 30 !== 0) {
             delete state.teamInfo;
         }
 
