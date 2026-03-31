@@ -10,6 +10,17 @@ export class GameState {
 
         // 10 mins
         this.gameDuration = 600000;
+
+        // end game screen gonna be 30 secs to view leaderboard
+        // and allow for saving player data
+        this.endGameDuration = 30000;
+        
+        // 30 second voting time as well
+        this.votingDuration = 30000;
+
+        // prob will not have this and will be just a part of voting time
+        this.lobbyWaitDuration = 30000;
+
         this.teams = { red: [], blue: [] };
     }
 
