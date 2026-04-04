@@ -2,12 +2,10 @@ import { memo, useEffect } from "react";
 import { useTeam } from "../../contexts/TeamContext";
 import { useGameState } from "../../contexts/useGameState";
 import "../../styles/team_scoreboard.css";
-import { useVoting } from "../../contexts/VotingContext";
 
 const TeamScoreboard = () => {
-    const { redTeam, blueTeam, redScore, blueScore, localPlayerTeam } = useTeam();
+    const { redScore, blueScore, localPlayerTeam } = useTeam();
     const gameState = useGameState();
-    const { hasVotingStarted, hasVotingEnded } = useVoting();
 
     useEffect(() => {
         console.log(gameState.gameState);
@@ -15,7 +13,7 @@ const TeamScoreboard = () => {
 
     return (
         <>
-            {!hasVotingStarted && hasVotingEnded && (
+            {gameState.gameState === "PLAYING" && (
                 <div className="team_scoreboard_container">
                     {/* Score Display */}
                     <div className="team_score_display">
