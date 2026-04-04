@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import { useTeam } from "../../contexts/TeamContext";
 import { useGameState } from "../../contexts/useGameState";
 import "../../styles/team_scoreboard.css";
@@ -8,6 +8,10 @@ const TeamScoreboard = () => {
     const { redTeam, blueTeam, redScore, blueScore, localPlayerTeam } = useTeam();
     const gameState = useGameState();
     const { hasVotingStarted, hasVotingEnded } = useVoting();
+
+    useEffect(() => {
+        console.log(gameState.gameState);
+    }, [gameState.gameState])
 
     return (
         <>
