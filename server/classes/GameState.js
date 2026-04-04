@@ -7,13 +7,14 @@ export class GameState {
         this.io = io;
         this.gameState = "WAITING";
         this.teamScores = { red: 0, blue: 0 };
-        this.gameStartTime = null;
 
         // 10 mins
+        this.gameStartTime = null;
         this.gameDuration = 20000;
 
         // end game screen gonna be 30 secs to view leaderboard
         // and allow for saving player data
+        this.endGameStartTime = null;
         this.endGameDuration = 30000;
         
         // 30 second voting time as well
@@ -58,8 +59,8 @@ export class GameState {
         this.sendCurrentGameState();
         console.log("Game ended!");
 
-        this.gameState = "WAITING";
-        this.sendCurrentGameState();
+        // this.gameState = "WAITING";
+        // this.sendCurrentGameState();
     }
 
     updateTeamScores(killerTeam) {
