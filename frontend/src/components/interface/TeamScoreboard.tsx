@@ -1,4 +1,4 @@
-import { memo, useEffect } from "react";
+import { memo } from "react";
 import { useTeam } from "../../contexts/TeamContext";
 import { useGameState } from "../../contexts/useGameState";
 import "../../styles/team_scoreboard.css";
@@ -6,10 +6,6 @@ import "../../styles/team_scoreboard.css";
 const TeamScoreboard = () => {
     const { redScore, blueScore, localPlayerTeam } = useTeam();
     const gameState = useGameState();
-
-    useEffect(() => {
-        console.log(gameState.gameState);
-    }, [gameState.gameState])
 
     return (
         <>

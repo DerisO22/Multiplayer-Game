@@ -5,10 +5,12 @@ import GameChatInput from "./GameChatInput";
 import { useSocket } from "../../contexts/useSocket";
 import GameChatToggle from "./GameChatToggle";
 import { useVoting } from "../../contexts/VotingContext";
+import { useGameState } from "../../contexts/useGameState";
 
 const GameChat = () => {
     const { socket } = useSocket();
     const { hasVotingEnded } = useVoting();
+    const gameState = useGameState();
     const chatPayload = usePlayerChat(socket);
     const [ isVisible, setIsVisible ] = useState<boolean>(true);
 
@@ -34,7 +36,7 @@ const GameChat = () => {
 
     return (
         <>
-            {isVisible && hasVotingEnded && (
+            {gameState.gameState !== "VOTING" && gameState.gameState !== "WAITING" && (
                 <>
                     <div className="player_chat_container">
                         <span className="heading">Game Chat</span>
