@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { useSocket } from "./useSocket";
 import { useGameState } from "./useGameState";
 import { useCurrentGameState } from "./CurrentGameState";
@@ -48,7 +48,7 @@ export const TeamProvider = ({ children }: TeamProviderProps) => {
         setBlueTeam(gameState.teamInfo.blue);
         setRedScore(gameState.teamInfo.teamScores.red);
         setBlueScore(gameState.teamInfo.teamScores.blue);
-    }, [gameState.teamInfo?.red, gameState.teamInfo?.blue, gameState.teamInfo?.teamScores]);
+    }, [gameState.teamInfo?.red, gameState.teamInfo?.blue, gameState.teamInfo?.teamScores, currentGameState, isFrozen]);
 
     useEffect(() => {
         if (currentGameState === "ENDED") {
@@ -61,13 +61,13 @@ export const TeamProvider = ({ children }: TeamProviderProps) => {
         p => p.id === socket?.id
     )?.team as "red" | "blue" | null || null;
 
-    const value: TeamContextType = {
+    const value: TeamContextType = useMemo(() => ({
         redTeam,
         blueTeam,
         redScore,
         blueScore,
         localPlayerTeam
-    };
+    }), [redTeam, blueTeam, redScore, blueScore, localPlayerTeam]);
 
     return (
         <TeamContext.Provider value={value}>

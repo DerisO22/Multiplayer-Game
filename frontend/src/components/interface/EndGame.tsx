@@ -8,8 +8,6 @@ const EndGame = () => {
     const { redScore, blueScore, localPlayerTeam } = useTeam();
 
     if(currentGameState !== "ENDED") return;
-
-    console.log("Pls don't be spam rendering!!!")
     
     return (
         <>
