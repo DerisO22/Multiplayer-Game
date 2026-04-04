@@ -23,13 +23,6 @@ export const GameProvider = ({ children }: GameProviderProps) => {
         }
     });
 
-    const updateCurrentGameState = (current_game_state: "WAITING" | "VOTING" | "PLAYING" | "ENDED") => {
-        setGameState(prev => ({
-            ...prev,
-            ["gameState"]: current_game_state
-        }))
-    }
-
     useEffect(() => {
         if(!socket) return;
 
@@ -38,7 +31,6 @@ export const GameProvider = ({ children }: GameProviderProps) => {
         }
 
         socket.on('sendState', handleState);
-        socket.on('current_game_state', updateCurrentGameState);
 
         return () => {
             socket.off('sendState', handleState);

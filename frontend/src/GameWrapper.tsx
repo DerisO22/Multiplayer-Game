@@ -1,6 +1,7 @@
 import { AbilitiesProvider } from "./contexts/AbilitiesContext";
 import { CharacterSelectionProvider } from "./contexts/CharacterSelectionContext";
 import { ChatInputProvider } from "./contexts/ChatInput";
+import { CurrentGameStateProvider } from "./contexts/CurrentGameState";
 import { GameSoundProvider } from "./contexts/GameSoundsContext";
 import { LobbyProvider } from "./contexts/LobbyContext";
 import { PlayerProvider } from "./contexts/PlayerContext";
@@ -14,6 +15,7 @@ const GameWrapper = () => {
     return (
         <SocketProvider>
             <GameProvider>
+            <CurrentGameStateProvider>
             <TeamProvider>
                 <PlayerProvider>
                 <AbilitiesProvider>
@@ -31,6 +33,7 @@ const GameWrapper = () => {
                 </AbilitiesProvider>
                 </PlayerProvider>
             </TeamProvider>
+            </CurrentGameStateProvider>
             </GameProvider>
         </SocketProvider>
     )

@@ -27,7 +27,7 @@ export class GameState {
 
     startGame() {
         this.gameState = "PLAYING";
-        this.sendCurrentGameState(this.io);
+        this.sendCurrentGameState();
         this.gameStartTime = Date.now();
         this.teamScores = { red: 0, blue: 0 };
         console.log("Game started!");

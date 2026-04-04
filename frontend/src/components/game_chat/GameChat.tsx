@@ -1,16 +1,14 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useState } from "react";
 import '../../styles/gamechat.css';
 import { usePlayerChat } from "../../utils/custom_hooks/usePlayerChat";
 import GameChatInput from "./GameChatInput";
 import { useSocket } from "../../contexts/useSocket";
 import GameChatToggle from "./GameChatToggle";
-import { useVoting } from "../../contexts/VotingContext";
-import { useGameState } from "../../contexts/useGameState";
+import { useCurrentGameState } from "../../contexts/CurrentGameState";
 
 const GameChat = () => {
     const { socket } = useSocket();
-    const { hasVotingEnded } = useVoting();
-    const gameState = useGameState();
+    const currentGameState = useCurrentGameState();
     const chatPayload = usePlayerChat(socket);
     const [ isVisible, setIsVisible ] = useState<boolean>(true);
 
@@ -36,7 +34,7 @@ const GameChat = () => {
 
     return (
         <>
-            {gameState.gameState !== "VOTING" && gameState.gameState !== "WAITING" && (
+            {currentGameState !== "VOTING" && currentGameState !== "WAITING" && isVisible && (
                 <>
                     <div className="player_chat_container">
                         <span className="heading">Game Chat</span>
@@ -68,7 +66,7 @@ const GameChat = () => {
                 </>
             )}
 
-            { hasVotingEnded && (
+            { currentGameState !== "VOTING" && currentGameState !== "WAITING" && (
                 <GameChatToggle handle_toggle={handle_toggle} isVisible={isVisible}/>
             )}
         </>
