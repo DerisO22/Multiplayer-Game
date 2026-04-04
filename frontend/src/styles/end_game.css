@@ -45,7 +45,7 @@
     display: flex;
     flex-direction: column;
     border-radius: 5px;
-    padding: 0.5rem;
+    padding: 0rem 0.5rem 0.5rem 0.5rem;
 }
 
 .team_roster.red_roster {
