@@ -36,5 +36,21 @@ export const playerQueries = {
         VALUES ($1, $2, $3, $4, $5, $6)
         ON CONFLICT (clerk_user_id)
         DO UPDATE SET player_kills = $2, player_deaths = $3, player_wins = $4, player_losses = $5, total_games_played = $6
-        RETURNING *;`
+        RETURNING *;`,
+    
+    // Player Clans
+    CREATE_PLAYER_GUILD:
+    ``,
+
+    ADD_PLAYER_TO_GUILD: 
+    ``,
+
+    GET_ALL_GUILD_INFORMATION:
+    ``,
+
+    REMOVE_GUILD:
+    ``,
+
+    REMOVE_PLAYER_FROM_GUILD:
+    ``,
 }

@@ -1,0 +1,121 @@
+.end_game_container {
+    top: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+
+    padding-top: 14rem;
+    color: white;
+}
+
+.endgame_header {
+    font-size: 2rem;
+    font-weight: 600;
+
+    text-decoration: underline;
+    text-underline-offset: 0.3rem;
+    text-decoration-thickness: 0.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.endgame_result_header {
+    font-size: 1.8rem;
+    font-weight: 550;
+}
+
+.team_rosters {
+    width: 50rem;
+    height: fit-content;
+
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+
+    margin-top: 1.4rem;
+}
+
+.team_roster {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    padding: 0rem 0.5rem 0.5rem 0.5rem;
+}
+
+.team_roster.red_roster {
+    color: rgb(255, 198, 198);
+    background-color: rgba(93, 5, 5, 0.425);
+}
+
+.team_roster.blue_roster {
+    color: aquamarine;
+    background-color: rgba(0, 13, 255, 0.302);
+}
+
+.roster_header {
+    text-align: center;
+
+    text-decoration: underline;
+    text-underline-offset: 0.3rem;
+    text-decoration-thickness: 0.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.leaderboard_header_container {
+    width: 100%;
+    display: flex;
+}
+
+.leaderboard_header {
+    width: 25%;
+    text-align: center;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+}
+
+.player_entry {
+    width: 100%;
+    display: flex;
+    background-color: rgba(178, 64, 64, 0.697);
+    padding: 0.5rem;
+    border-radius: 5px;
+}
+
+.player_info {
+    width: 25%;
+    text-align: center;
+    color: white;
+}
+
+.blue_team {
+    color: rgb(169, 226, 255);
+}
+
+.red_team {
+    color: #ffbfbf;
+}
+
+/* Scrollbar styling */
+.roster_players::-webkit-scrollbar {
+    width: 6px;
+}
+
+.roster_players::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+}
+
+.roster_players::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+.roster_players::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}

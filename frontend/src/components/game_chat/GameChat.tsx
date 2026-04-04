@@ -1,20 +1,16 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useState } from "react";
 import '../../styles/gamechat.css';
 import { usePlayerChat } from "../../utils/custom_hooks/usePlayerChat";
 import GameChatInput from "./GameChatInput";
 import { useSocket } from "../../contexts/useSocket";
 import GameChatToggle from "./GameChatToggle";
-import { useVoting } from "../../contexts/VotingContext";
+import { useCurrentGameState } from "../../contexts/CurrentGameState";
 
 const GameChat = () => {
     const { socket } = useSocket();
-    const { hasVotingEnded } = useVoting();
+    const currentGameState = useCurrentGameState();
     const chatPayload = usePlayerChat(socket);
     const [ isVisible, setIsVisible ] = useState<boolean>(true);
-
-    useEffect(() => {
-        console.log(chatPayload);
-    }, [chatPayload]);
 
     const formatDate = (time: number) => {
         const timeObject = new Date(time);
@@ -32,14 +28,13 @@ const GameChat = () => {
     };
 
     const handle_toggle = (e: React.MouseEvent) => {
-        console.log(isVisible)
         e.preventDefault();
         setIsVisible(prev => !prev);
     }
 
     return (
         <>
-            {isVisible && hasVotingEnded && (
+            {currentGameState !== "VOTING" && currentGameState !== "WAITING" && isVisible && (
                 <>
                     <div className="player_chat_container">
                         <span className="heading">Game Chat</span>
@@ -55,11 +50,11 @@ const GameChat = () => {
                                     </div>
                                 ))}
 
-                                {chatPayload && chatPayload.whisper_messages.map((message, index) => {
+                                {chatPayload && chatPayload.whisper_messages.map((message, index) => (
                                     <div key={message.from + index} className="message">
 
                                     </div>
-                                })}
+                                ))}
                             </>
                         </div>
                         
@@ -67,11 +62,10 @@ const GameChat = () => {
                             <GameChatInput socket={socket}/>
                         )}
                     </div>
-                    
                 </>
             )}
 
-            { hasVotingEnded && (
+            { currentGameState !== "VOTING" && currentGameState !== "WAITING" && (
                 <GameChatToggle handle_toggle={handle_toggle} isVisible={isVisible}/>
             )}
         </>

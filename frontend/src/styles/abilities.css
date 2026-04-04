@@ -14,14 +14,21 @@
 
 .abilities_card {
     display: flex;
-    justify-content: center;
-    align-items: end;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     font-family: monospace;
     user-select: none;
+    gap: 1rem;
 
     background-color: rgba(0, 0, 0, 0.43);
     border-radius: 10px;
     border: 2px solid rgba(255, 255, 255, 0.552);
+    transition: all 0.1s ease-in-out;
+}
+
+.abilities_card.active-ability {
+    background-color: rgba(0, 0, 0, 0.13);
 }
 
 .abilities_card.card0 {

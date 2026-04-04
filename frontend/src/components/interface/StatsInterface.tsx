@@ -1,4 +1,4 @@
-import { memo, type Dispatch, type SetStateAction } from "react";
+import { memo, useMemo, type Dispatch, type SetStateAction } from "react";
 import { useGameState } from "../../contexts/useGameState";
 import { useSocket } from "../../contexts/useSocket";
 import '../../styles/interface.css';
@@ -17,7 +17,7 @@ const StatsInterface = ({ cam } : StatsInterfaceProps) => {
     const gameState = useGameState();
 
     // Find local player
-    const localPlayer = gameState.players.find(player => player.id === socket?.id);
+    const localPlayer = useMemo(() => gameState.players.find(player => player.id === socket?.id), [gameState.players, socket?.id])
     const localPlayerPosition = localPlayer?.position || null;
 
     return (

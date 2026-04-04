@@ -1,22 +1,23 @@
-import LoadingInterface from './components/interface/LoadingInterface'
-import GameChat from './components/game_chat/GameChat'
-import StatsInterface from './components/interface/StatsInterface'
-import Abilities from './components/interface/Abilities'
-import Lobby from './components/interface/GameLobby/Lobby'
+import LoadingInterface from './components/interface/LoadingInterface';
+import GameChat from './components/game_chat/GameChat';
+import StatsInterface from './components/interface/StatsInterface';
+import Abilities from './components/interface/Abilities';
+import Lobby from './components/interface/GameLobby/Lobby';
 import Scene from './components/scene/Scene';
-import { Canvas } from '@react-three/fiber'
-import { Sky, Stars } from '@react-three/drei'
-import { SKY_CONFIG } from './utils/consts/environment'
-import { useEffect, useState } from 'react'
-import { useSocket } from './contexts/useSocket'
-import { useKeyboardControls } from './utils/custom_hooks/useKeyboardControls'
+import { Canvas } from '@react-three/fiber';
+import { Sky, Stars } from '@react-three/drei';
+import { SKY_CONFIG } from './utils/consts/environment';
+import { useEffect, useState } from 'react';
+import { useSocket } from './contexts/useSocket';
+import { useKeyboardControls } from './utils/custom_hooks/useKeyboardControls';
 
 /**
  * Authentication Imports
  */
 import { useUser } from '@clerk/clerk-react';
-import { usePlayerData } from './contexts/PlayerContext'
-import TeamScoreboard from './components/interface/TeamScoreboard'
+import { usePlayerData } from './contexts/PlayerContext';
+import TeamScoreboard from './components/interface/TeamScoreboard';
+import EndGame from './components/interface/EndGame';
 
 const Game = () => {
     const { socket, isConnected } = useSocket();
@@ -71,7 +72,6 @@ const Game = () => {
 
             {/* Interface */}
             <Lobby />
-            <TeamScoreboard />
             
             {/* Game Chat */}
             {isConnected ? (
@@ -79,6 +79,8 @@ const Game = () => {
                     <Abilities />
                     <StatsInterface cam={{cameraMode, setCameraMode}}/>
                     <GameChat />
+                    <TeamScoreboard />
+                    <EndGame />
                 </>
             ) : (
                 <LoadingInterface />

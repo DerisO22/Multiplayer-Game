@@ -3,15 +3,15 @@ import '../../../styles/lobby.css';
 import { useEffect, useState } from "react";
 import { scroll_reveal } from "../../../utils/consts/ScrollReveal";
 import LobbyMenu from "./LobbyMenu";
-import { useVoting } from "../../../contexts/VotingContext";
 import { useLobby } from "../../../contexts/LobbyContext";
 import PlayerList from "./PlayerList";
 import CharacterSelector from "./CharacterSelector";
+import { useCurrentGameState } from "../../../contexts/CurrentGameState";
 
 const Lobby = () => {
     const { total_players } = useLobby();
     const [ test, setTest ] = useState<number>(0);
-    const { hasVotingStarted, hasVotingEnded } = useVoting();
+    const currentGameState = useCurrentGameState();
     const [ isPlayerListVisible, setIsPlayerListVisible ] = useState<boolean>(false);
 
     useEffect(() => {
@@ -22,6 +22,8 @@ const Lobby = () => {
         });
         scroll_reveal.reveal('.info_text', {origin: "left"})
     }, []);
+
+    console.log(currentGameState);
 
     useEffect(() => {
         // Just looking at forcing re-renders here
@@ -35,7 +37,7 @@ const Lobby = () => {
 
     return (
         <>
-            {!hasVotingStarted && !hasVotingEnded && (
+            {currentGameState === "WAITING" && (
                 <div className="lobby_screen_container">
                     <div className="logo_container">
                         <img className="logo_image" src="../../../../public/game_logo.webp"></img>
@@ -84,7 +86,7 @@ const Lobby = () => {
                 </div>
             )}
 
-            {hasVotingStarted && !hasVotingEnded && (
+            {currentGameState === "VOTING" && (
                 <Voting />
             )}
         </>

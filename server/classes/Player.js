@@ -57,8 +57,6 @@ export class Player {
         this.body = this.game.world.createRigidBody(bodyDesc);
 
         let colliderDesc = RAPIER.ColliderDesc.capsule(0.5, 0.5);
-        this.game.world.createCollider(colliderDesc, this.body);
-
         this.collider = this.game.world.createCollider(colliderDesc, this.body);
 
         // Team & Stats
@@ -148,7 +146,11 @@ export class Player {
     getDrawInfo() {
         const position = this.body.translation();
         return {
-            position: { x: position.x, y: position.y, z: position.z },
+            position: { 
+                x: Math.round(position.x * 100) / 100, 
+                y: Math.round(position.y * 100) / 100,
+                z: Math.round(position.z * 100) / 100
+            },
             team: this.team,
             kills: this.kills,
             deaths: this.deaths,

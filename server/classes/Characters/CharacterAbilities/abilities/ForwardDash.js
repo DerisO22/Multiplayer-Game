@@ -1,5 +1,4 @@
 import { Ability } from "../Ability.js";
-import RAPIER from  "@dimforge/rapier3d-compat";
 
 export class ForwardDash extends Ability {
     constructor() {
@@ -56,7 +55,7 @@ export class ForwardDash extends Ability {
             if (distance < this.dashRange) {
                 // Check if target is roughly in dash direction (forward)
                 const dotProduct = dz * dashDirection.z;
-                if (dotProduct < 0) {  // Same direction as dash
+                if (dotProduct < 0) { 
                     otherPlayer.takeDamage(this.damageAmount, player);
                     console.log(`${player.nickname} hit ${otherPlayer.nickname} with forward dash (distance: ${distance.toFixed(2)})`);
                 }
