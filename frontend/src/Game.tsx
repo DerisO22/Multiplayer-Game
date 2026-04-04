@@ -17,6 +17,7 @@ import { useKeyboardControls } from './utils/custom_hooks/useKeyboardControls';
 import { useUser } from '@clerk/clerk-react';
 import { usePlayerData } from './contexts/PlayerContext';
 import TeamScoreboard from './components/interface/TeamScoreboard';
+import EndGame from './components/interface/EndGame';
 
 const Game = () => {
     const { socket, isConnected } = useSocket();
@@ -79,6 +80,7 @@ const Game = () => {
                     <StatsInterface cam={{cameraMode, setCameraMode}}/>
                     <GameChat />
                     <TeamScoreboard />
+                    <EndGame />
                 </>
             ) : (
                 <LoadingInterface />

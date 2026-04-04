@@ -10,7 +10,7 @@ export class GameState {
         this.gameStartTime = null;
 
         // 10 mins
-        this.gameDuration = 600000;
+        this.gameDuration = 20000;
 
         // end game screen gonna be 30 secs to view leaderboard
         // and allow for saving player data

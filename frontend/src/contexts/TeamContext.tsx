@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { useSocket } from "./useSocket";
 import { useGameState } from "./useGameState";
+import { useCurrentGameState } from "./CurrentGameState";
 
 interface TeamMember {
     socketId: string;
@@ -27,21 +28,33 @@ const TeamContext = createContext<TeamContextType | undefined>(undefined);
 export const TeamProvider = ({ children }: TeamProviderProps) => {
     const { socket } = useSocket();
     const gameState = useGameState();
+    const currentGameState = useCurrentGameState();
     
     const [redTeam, setRedTeam] = useState<TeamMember[]>([]);
     const [blueTeam, setBlueTeam] = useState<TeamMember[]>([]);
     const [redScore, setRedScore] = useState(0);
     const [blueScore, setBlueScore] = useState(0);
+    const [isFrozen, setIsFrozen] = useState<boolean>(false);
 
     // Update teams whenever gameState changes
     useEffect(() => {
         if (!gameState.teamInfo) return;
+
+        if(currentGameState === "ENDED"|| isFrozen) {
+            return;
+        }
 
         setRedTeam(gameState.teamInfo.red);
         setBlueTeam(gameState.teamInfo.blue);
         setRedScore(gameState.teamInfo.teamScores.red);
         setBlueScore(gameState.teamInfo.teamScores.blue);
     }, [gameState.teamInfo?.red, gameState.teamInfo?.blue, gameState.teamInfo?.teamScores]);
+
+    useEffect(() => {
+        if (currentGameState === "ENDED") {
+            setIsFrozen(true);
+        }
+    }, [currentGameState]);
 
     // Get local player's team
     const localPlayerTeam = gameState.players.find(

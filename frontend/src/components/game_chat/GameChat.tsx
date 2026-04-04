@@ -62,7 +62,6 @@ const GameChat = () => {
                             <GameChatInput socket={socket}/>
                         )}
                     </div>
-                    
                 </>
             )}
 
