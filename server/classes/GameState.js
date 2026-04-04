@@ -25,6 +25,11 @@ export class GameState {
         this.teams = { red: [], blue: [] };
     }
 
+    startVoting() {
+        this.gameState = "VOTING";
+        this.sendCurrentGameState();
+    }
+
     startGame() {
         this.gameState = "PLAYING";
         this.sendCurrentGameState();

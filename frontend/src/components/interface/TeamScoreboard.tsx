@@ -2,14 +2,16 @@ import { memo } from "react";
 import { useTeam } from "../../contexts/TeamContext";
 import { useGameState } from "../../contexts/useGameState";
 import "../../styles/team_scoreboard.css";
+import { useCurrentGameState } from "../../contexts/CurrentGameState";
 
 const TeamScoreboard = () => {
     const { redScore, blueScore, localPlayerTeam } = useTeam();
+    const currentGameState = useCurrentGameState();
     const gameState = useGameState();
 
     return (
         <>
-            {gameState.gameState === "PLAYING" && (
+            {currentGameState === "PLAYING" && (
                 <div className="team_scoreboard_container">
                     {/* Score Display */}
                     <div className="team_score_display">
@@ -25,7 +27,7 @@ const TeamScoreboard = () => {
                                 {String(gameState.timeRemainingSeconds % 60).padStart(2, "0")}
                             </div>
                             <div className="time_label">
-                                {gameState.gameState === "PLAYING" ? "Time Left" : "Game Ended"}
+                                {currentGameState === "PLAYING" ? "Time Left" : "Game Ended"}
                             </div>
                         </div>
 

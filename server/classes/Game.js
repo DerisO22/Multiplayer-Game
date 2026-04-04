@@ -70,6 +70,7 @@ export class Game {
 
                 if (isEnoughPlayer) {
                     console.log("Yes Enough. Start the Voting");
+                    this.GameState.startVoting();
                     clearInterval(interval);
                     resolve();
                 } else {
