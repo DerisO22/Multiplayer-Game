@@ -19,7 +19,6 @@ export class Game {
         this.pending_sockets = {}; 
         this.GameState = new GameState(io);
         this.GameState.sendCurrentGameState();
-        // 4 players per team
         this.TeamManager = new TeamManager(4);
         this.Lobby = new Lobby(io);
         this.is_game_running = false;
@@ -36,9 +35,10 @@ export class Game {
         this.abilityRateLimit = new RateLimiter(10, 1000);
 
         /**
-         * Game loop interval for checking game end conditions
+         * Game loop interval references
          */
         this.gameLoopInterval = null;
+        this.stateTransitionInterval = null;
     }
 
     async startGame() {
@@ -49,35 +49,48 @@ export class Game {
             await this.lobbyWait();
             
             const map_winner = await this.Lobby.startVoting();
-            console.log(`Map ${map_winner} won the vote`);
+            console.log(`✓ Map ${map_winner} won the vote`);
 
             await this.initPhysics(map_winner);
             
             this.is_game_running = true;
             console.log("Game loop started!");
+
+            // Start the state transition checker
+            this.setupStateTransitionChecker();
         } catch (error) {
             console.error("Error starting game:", error);
             throw error;
         }
     }
 
+    /**
+     * Wait for NEEDED_PLAYERS to connect
+     * After they connect, start a countdown before voting
+     */
     async lobbyWait() {
         return new Promise((resolve) => {
             const interval = setInterval(() => {
-                const isEnoughPlayer = Object.keys(this.pending_sockets).length >= NEEDED_PLAYERS ? true : false;
-                console.log(isEnoughPlayer)
-                console.log(Object.keys(this.pending_sockets).length);
+                const playerCount = Object.keys(this.pending_sockets).length;
+                const hasEnoughPlayers = playerCount >= NEEDED_PLAYERS;
 
-                if (isEnoughPlayer) {
-                    console.log("Yes Enough. Start the Voting");
-                    this.GameState.startVoting();
+                console.log(`Players connected: ${playerCount}/${NEEDED_PLAYERS}`);
+
+                if (hasEnoughPlayers && !this.GameState.lobbyCountdownStartTime) {
+                    // lobby countdown
+                    this.GameState.startLobbyCountdown();
+                    console.log("Starting 5 second countdown before voting...");
+                }
+
+                // Check if countdown is complete
+                if (hasEnoughPlayers && this.GameState.isLobbyCountdownComplete()) {
+                    console.log("Countdown complete! Starting voting phase");
+                    this.GameState.gameState = "VOTING";
+                    this.GameState.sendCurrentGameState();
                     clearInterval(interval);
                     resolve();
-                } else {
-                    console.log("Waiting for Players");
-                    console.log("will check again in 5sec");
                 }
-            }, 5000);
+            }, 1000);
         });
     }
 
@@ -90,18 +103,17 @@ export class Game {
 
         console.log("Physics Loaded via gltf-transform");
         
-        // Create Player instances for anyone connects during voting
+        // Create Player instances for anyone connected during voting
         if (this.pending_sockets) {
             console.log(`Creating ${Object.keys(this.pending_sockets).length} pending players...`);
             
             for (const [socketId, socket] of Object.entries(this.pending_sockets)) {
                 try {
-                    // Add character selection
                     const select_character = socket.selectedCharacter || "carrot"
 
                     this.players[socketId] = CharacterFactory.createCharacter(select_character, this, socket);
                     
-                    // ASSIGN TO TEAM
+                    // Assign to team
                     this.TeamManager.assignPlayerToTeam(socketId, this.players[socketId]);
                     console.log(`Player ${socketId} assigned to team ${this.players[socketId].team}`);
                     
@@ -130,6 +142,104 @@ export class Game {
                 this.endGame();
             }
         }, 1000);
+    }
+
+    /**
+     * state transitions:
+     * - ENDED → WAITING (after 20 second end screen)
+     * This runs every second to check timers
+     */
+    setupStateTransitionChecker() {
+        this.stateTransitionInterval = setInterval(() => {
+            if (this.GameState.gameState === "ENDED" && this.GameState.isEndGameScreenComplete()) {
+                console.log("End game screen duration complete. Resetting game...");
+                this.resetGame();
+            }
+        }, 1000);
+    }
+
+    /**
+     * Reset the entire game state and return to lobby
+     * This cleans up all players, physics, and game data
+     */
+    resetGame() {
+        console.log("\n=== RESETTING GAME ===");
+
+        // Stop game running flag
+        this.is_game_running = false;
+
+        // Clear game loop interval
+        if (this.gameLoopInterval) {
+            clearInterval(this.gameLoopInterval);
+            this.gameLoopInterval = null;
+        }
+
+        // Remove all players from world and memory
+        Object.entries(this.players).forEach(([socketId, player]) => {
+            try {
+                if (player && this.world) {
+                    // Remove from team
+                    this.TeamManager.removePlayer(socketId);
+                    // Remove rigid body
+                    this.world.removeRigidBody(player.body);
+                }
+            } catch (error) {
+                console.error(`Error cleaning up player ${socketId}:`, error);
+            }
+        });
+
+        this.players = {};
+        this.pending_sockets = {};
+        this.world = null;
+
+        // Reset game managers
+        this.TeamManager.reset();
+        this.Lobby.cancelVoting();
+        this.GameState.reset();
+        this.teamInfoCounter = 0;
+
+        // Clear rate limiters
+        this.chatRateLimit.requests = {};
+        this.buttonRateLimit.requests = {};
+        this.abilityRateLimit.requests = {};
+
+        console.log("Game reset complete. Ready for new game cycle.");
+        console.log("Waiting for players to reconnect...\n");
+
+        // Restart the lobby wait cycle
+        this.restartLobbyPhase();
+    }
+    
+    // reset
+    async restartLobbyPhase() {
+        // Re-add all currently connected sockets to pending_sockets
+        // since resetGame() cleared it but sockets are still connected
+        const connectedSockets = Array.from(this.io.sockets.sockets.values());
+        
+        console.log(`Found ${connectedSockets.length} connected sockets, re-registering...`);
+        
+        connectedSockets.forEach(socket => {
+            // Only re-add if not already in system
+            if (!this.players[socket.id] && !this.pending_sockets[socket.id]) {
+                this.pending_sockets[socket.id] = socket;
+                console.log(`Re-registered socket ${socket.id} to pending_sockets`);
+            }
+        });
+    
+        // Continue 
+        try {
+            await this.lobbyWait();
+            
+            const map_winner = await this.Lobby.startVoting();
+            console.log(`Map ${map_winner} won the vote`);
+    
+            await this.initPhysics(map_winner);
+            
+            this.is_game_running = true;
+            console.log("Game loop started!");
+        } catch (error) {
+            console.error("Error restarting lobby phase:", error);
+        }
     }
 
     setupSocketEvents() {
@@ -186,7 +296,7 @@ export class Game {
                     console.log(`Removed pending socket ${socket.id}`);
                 }
 
-                // clean up ratelimits
+                // Clean up rate limits
                 delete this.chatRateLimit.requests[socket.id];
                 delete this.buttonRateLimit.requests[socket.id];
                 delete this.abilityRateLimit.requests[socket.id];
@@ -196,14 +306,12 @@ export class Game {
             });
 
             socket.on("setButton", ({ button, value }) => {
-                // input val
                 const validation = InputValidator.validateButton(button, value);
                 if(!validation.valid) {
                     console.warn(`Button validation failed: ${validation.error}`);
                     return;
                 }
 
-                // rate limit
                 if(!this.buttonRateLimit.isAllowed(socket.id)){
                     console.log("Hit button rate limit!");
                     return;
@@ -220,7 +328,6 @@ export class Game {
                 const player = this.players[socket.id];
                 if (!player || player.damageSystem.isDead) return;
             
-                // Validate ability key
                 const validation = InputValidator.validateAbilityKey(abilityKey, player);
                 if (!validation.valid) {
                     console.warn(`Ability validation failed: ${validation.error}`);
@@ -228,7 +335,6 @@ export class Game {
                     return;
                 }
             
-                // Rate limit
                 if(!this.abilityRateLimit.isAllowed(socket.id)){
                     return;
                 }
@@ -239,7 +345,6 @@ export class Game {
             })
 
             socket.on("send_message", ({ text }) => {
-                // check message
                 const validation = InputValidator.validateChatMessage(text);
                 if (!validation.valid) {
                     console.warn(`Message validation failed: ${validation.error}`);
@@ -247,7 +352,6 @@ export class Game {
                     return;
                 }
 
-                // rate limit
                 if(!this.chatRateLimit.isAllowed(socket.id)){
                     console.log("Hit chatting rate limit!");
                     return;
@@ -326,7 +430,6 @@ export class Game {
     handleCharacterSelection(socket, characterType) {
         console.log(`Player ${socket.id} selected character: ${characterType}`);
  
-        // Validate character type
         if (!CharacterFactory.CHARACTERS[characterType.toLowerCase()]) {
             console.warn(`Invalid character type: ${characterType}`);
             socket.emit("selection_error", "Invalid character selected");
@@ -337,7 +440,6 @@ export class Game {
             try {
                 this.players[socket.id] = CharacterFactory.createCharacter(characterType, this, socket);
                 
-                // ASSIGN TEAM IF NOT ALREADY ASSIGNED
                 if (!this.players[socket.id].team) {
                     this.TeamManager.assignPlayerToTeam(socket.id, this.players[socket.id]);
                     console.log(`Player ${socket.id} assigned to team ${this.players[socket.id].team}`);
@@ -346,7 +448,6 @@ export class Game {
                 socket.emit("character_selected", { character: characterType });
                 console.log(`Character ${characterType} created for ${socket.id}`);
                 
-                // Broadcast updated team info
                 this.broadcastTeamInfo();
             } catch (error) {
                 console.error(`Failed to create character for ${socket.id}:`, error);
@@ -386,7 +487,6 @@ export class Game {
 
         this.io.sockets.emit("game_ended", gameEndData);
 
-        // Clear game loop interval
         if (this.gameLoopInterval) {
             clearInterval(this.gameLoopInterval);
         }

@@ -1,34 +1,80 @@
 export class GameState {
     constructor(io) {
         /**
-         * Game State Vals
-         * WAITING -> VOTING -> PLAYING -> ENDED
+         *  Game State Vals
+         *  WAITING -> VOTING -> PLAYING -> ENDED -> WAITING
+         * 
+         *  WAITING with lobbyCountdownStartTime active = pre-voting countdown
          */
         this.io = io;
         this.gameState = "WAITING";
         this.teamScores = { red: 0, blue: 0 };
 
-        // 10 mins
+        // 20 seconds for game
         this.gameStartTime = null;
         this.gameDuration = 20000;
 
-        // end game screen gonna be 30 secs to view leaderboard
-        // and allow for saving player data
+        // 20 secs to view leaderboard and stats
         this.endGameStartTime = null;
-        this.endGameDuration = 30000;
+        this.endGameDuration = 20000;
         
-        // 30 second voting time as well
+        // 30 second voting time
         this.votingDuration = 30000;
+        this.votingStartTime = null;
 
-        // prob will not have this and will be just a part of voting time
-        this.lobbyWaitDuration = 30000;
+        // 5 second countdown before voting starts
+        this.lobbyCountdownDuration = 5000;
+        this.lobbyCountdownStartTime = null;
 
         this.teams = { red: [], blue: [] };
+        this.activeTimers = [];
+    }
+
+    /**
+     *  lobby countdown
+     */
+    startLobbyCountdown() {
+        console.log("Lobby countdown started! Starting voting in 5 seconds...");
+        this.gameState = "WAITING"; 
+        this.lobbyCountdownStartTime = Date.now();
+        this.sendCurrentGameState();
+    }
+
+    /**
+     *  Check if lobby countdown is complete
+     */
+    isLobbyCountdownComplete() {
+        if (!this.lobbyCountdownStartTime) return false;
+        
+        const elapsed = Date.now() - this.lobbyCountdownStartTime;
+        const isComplete = elapsed >= this.lobbyCountdownDuration;
+        
+        if (isComplete) {
+            this.lobbyCountdownStartTime = null; 
+        }
+        
+        return isComplete;
+    }
+
+    /**
+     *  Get lobby countdown time remaining
+     */
+    getLobbyCountdownRemaining() {
+        if (!this.lobbyCountdownStartTime) return 0;
+        
+        const elapsed = Date.now() - this.lobbyCountdownStartTime;
+        return Math.max(0, this.lobbyCountdownDuration - elapsed);
+    }
+
+    getLobbyCountdownRemainingSeconds() {
+        return Math.ceil(this.getLobbyCountdownRemaining() / 1000);
     }
 
     startVoting() {
         this.gameState = "VOTING";
+        this.votingStartTime = Date.now();
         this.sendCurrentGameState();
+        console.log("Voting started!");
     }
 
     startGame() {
@@ -56,17 +102,62 @@ export class GameState {
 
     endGame() {
         this.gameState = "ENDED";
+        this.endGameStartTime = Date.now();
         this.sendCurrentGameState();
-        console.log("Game ended!");
-
-        // this.gameState = "WAITING";
-        // this.sendCurrentGameState();
+        console.log("Game ended! End screen showing for 20 seconds...");
     }
 
-    updateTeamScores(killerTeam) {
-        if (killerTeam === "red" || killerTeam === "blue") {
-            this.teamScores[killerTeam]++;
+    /**
+     *  Check if end game screen duration is complete
+     */
+    isEndGameScreenComplete() {
+        if (!this.endGameStartTime) return false;
+        
+        const elapsed = Date.now() - this.endGameStartTime;
+        const isComplete = elapsed >= this.endGameDuration;
+        
+        if (isComplete) {
+            this.endGameStartTime = null;
         }
+        
+        return isComplete;
+    }
+
+    /**
+     *  Get end game screen time remaining
+     */
+    getEndGameScreenRemaining() {
+        if (!this.endGameStartTime) return 0;
+        
+        const elapsed = Date.now() - this.endGameStartTime;
+        return Math.max(0, this.endGameDuration - elapsed);
+    }
+
+    getEndGameScreenRemainingSeconds() {
+        return Math.ceil(this.getEndGameScreenRemaining() / 1000);
+    }
+
+    /**
+     *  Reset game state back to WAITING
+     */
+    reset() {
+        this.gameState = "WAITING";
+        this.sendCurrentGameState();
+        this.teamScores = { red: 0, blue: 0 };
+        this.gameStartTime = null;
+        this.endGameStartTime = null;
+        this.lobbyCountdownStartTime = null;
+        this.votingStartTime = null;
+        this.teams = { red: [], blue: [] };
+        console.log("GameState reset to WAITING");
+    }
+
+    /**
+     *  Clear active timers 
+     */
+    clearTimers() {
+        this.activeTimers.forEach(timer => clearTimeout(timer));
+        this.activeTimers = [];
     }
 
     getStatus() {
@@ -75,16 +166,10 @@ export class GameState {
             teamScores: this.teamScores,
             timeRemaining: this.getTimeRemaining(),
             timeRemainingSeconds: this.getTimeRemainingSeconds(),
-            isActive: this.isGameActive()
+            isActive: this.isGameActive(),
+            lobbyCountdownRemaining: this.getLobbyCountdownRemaining(),
+            endGameScreenRemaining: this.getEndGameScreenRemaining()
         };
-    }
-
-    reset() {
-        this.gameState = "WAITING";
-        this.sendCurrentGameState();
-        this.teamScores = { red: 0, blue: 0 };
-        this.gameStartTime = null;
-        this.teams = { red: [], blue: [] };
     }
 
     sendCurrentGameState() {
