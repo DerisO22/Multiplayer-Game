@@ -29,6 +29,8 @@ export const VotingContextProvider = ({ children }: VotingContextProviderProps) 
     const [playerVote, setPlayerVote] = useState<string | null>(null);
     const [isVoteLocked, setIsVoteLocked] = useState(false);
 
+    const [ isVotingVisible, setIsVotingVisible ] = useState<boolean>(true);
+
     // Handle the voting timer countdown
     useEffect(() => {
         if (!hasVotingStarted || hasVotingEnded) return;
@@ -55,6 +57,7 @@ export const VotingContextProvider = ({ children }: VotingContextProviderProps) 
             const duration = payload.duration || 30000;
             const currentVotes = payload.current_votes || { map1: 0, map2: 0, map3: 0 };
             
+            setIsVotingVisible(true);
             setHasVotingStarted(true);
             setHasVotingEnded(false);
             setVotingTimeRemaining(duration / 1000);
@@ -77,6 +80,8 @@ export const VotingContextProvider = ({ children }: VotingContextProviderProps) 
             setHasVotingStarted(false);
             setHasVotingEnded(true);
             setIsVoteLocked(true);
+
+            setIsVotingVisible(false);
         });
 
         // Cleanup listeners
@@ -86,6 +91,11 @@ export const VotingContextProvider = ({ children }: VotingContextProviderProps) 
             socket.off("end_vote");
         };
     }, [socket]);
+
+    const toggleVotingVisibility = () => {
+        setIsVotingVisible(prev => !prev);
+        console.log(isVotingVisible)
+    }
 
     const handle_player_vote = (e: React.MouseEvent<HTMLDivElement>, choice: string) => {
         e.preventDefault();
@@ -114,6 +124,8 @@ export const VotingContextProvider = ({ children }: VotingContextProviderProps) 
         mapWinner,
         handle_player_vote,
         votingTimeRemaining,
+        isVotingVisible,
+        toggleVotingVisibility
     };
 
     return (

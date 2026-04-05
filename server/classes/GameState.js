@@ -19,7 +19,7 @@ export class GameState {
         this.endGameDuration = 20000;
         
         // 30 second voting time
-        this.votingDuration = 30000;
+        this.votingDuration = 3000000;
         this.votingStartTime = null;
 
         // 5 second countdown before voting starts
