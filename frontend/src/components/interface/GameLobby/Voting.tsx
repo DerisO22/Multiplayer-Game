@@ -1,5 +1,5 @@
 import { get_map_vote_path } from "../../../utils/helpers/getMapPath";
-import { useVoting, Maps, useVotingTimer } from "../../../contexts/VotingContext";
+import { useVoting, Maps } from "../../../contexts/VotingContext";
 import { memo } from "react";
 import { useCurrentGameState } from "../../../contexts/CurrentGameState";
 import VotingTimer from "./VotingTImer";
