@@ -14,7 +14,7 @@ const Lobby = () => {
     const [ test, setTest ] = useState<number>(0);
     const currentGameState = useCurrentGameState();
     const [ isPlayerListVisible, setIsPlayerListVisible ] = useState<boolean>(false);
-    const { hasVotingStarted, isVotingVisible, toggleVotingVisibility } = useVoting();
+    const { isVotingVisible, toggleVotingVisibility } = useVoting();
 
     useEffect(() => {
         scroll_reveal.reveal('.logo_container', { origin: "left" });

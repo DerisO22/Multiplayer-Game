@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useSocket } from "./useSocket";
 import type { VotingContextType, VotingContextProviderProps, VotesType } from "../utils/types/lobbyTypes";
 
@@ -29,7 +29,7 @@ export const VotingContextProvider = ({ children }: VotingContextProviderProps) 
     const [playerVote, setPlayerVote] = useState<string | null>(null);
     const [isVoteLocked, setIsVoteLocked] = useState(false);
 
-    const [ isVotingVisible, setIsVotingVisible ] = useState<boolean>(true);
+    const [ isVotingVisible, setIsVotingVisible ] = useState<boolean>(false);
 
     // Handle the voting timer countdown
     useEffect(() => {
@@ -117,16 +117,18 @@ export const VotingContextProvider = ({ children }: VotingContextProviderProps) 
         socket?.emit("player_vote", { choice: mapKey });
     };
 
-    const voting_state = {
-        hasVotingStarted,
-        hasVotingEnded,
-        votes,
-        mapWinner,
-        handle_player_vote,
-        votingTimeRemaining,
-        isVotingVisible,
-        toggleVotingVisibility
-    };
+    const voting_state = useMemo(() => {
+        return {
+            hasVotingStarted,
+            hasVotingEnded,
+            votes,
+            mapWinner,
+            handle_player_vote,
+            votingTimeRemaining,
+            isVotingVisible,
+            toggleVotingVisibility
+        }
+    }, [hasVotingStarted, hasVotingEnded, votes, mapWinner, handle_player_vote, votingTimeRemaining, isVotingVisible, toggleVotingVisibility]);
 
     return (
         <VotingContext.Provider value={voting_state}>
