@@ -18,6 +18,8 @@ const GameWorld = ({ cameraMode } : GameWorldProps) => {
     const localPlayer = gameState.players.find(player => player.id === socket?.id);
     const localPlayerPosition = localPlayer?.position || null;
 
+    console.log(localPlayer);
+
     return (
         <>
             {/* Render all players */}
@@ -25,6 +27,7 @@ const GameWorld = ({ cameraMode } : GameWorldProps) => {
                 <PlayerCube
                     ref={player.id === socket?.id ? localPlayerRef : null}
                     key={player.id}
+                    rotation={player.rotation}
                     position={player.position}
                     isLocalPlayer={player.id === socket?.id}
                     team={player.team}
@@ -34,10 +37,10 @@ const GameWorld = ({ cameraMode } : GameWorldProps) => {
 
             {/* Camera controls */}
             {cameraMode === 'follow' && localPlayerPosition && (
-                <CameraFollower targetRef={localPlayerRef} />
+                <CameraFollower targetRef={localPlayerRef} rotationY={localPlayer?.rotation} />
             )}
         </>
     )
 }
 
-export default GameWorld
+export default GameWorld;

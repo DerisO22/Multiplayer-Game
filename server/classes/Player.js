@@ -11,7 +11,6 @@ export class Player {
         this.game = game;
         this.socket = socket;
         this.io = socket.id;
-        this.position = {x: 0, y: 0, z: 0};
         this.nickname = `Player_${socket.id.substring(0, 4)}`;
         
         /**
@@ -23,6 +22,8 @@ export class Player {
         //     d - right
         // space - jump
         this.input = {};
+        this.position = {x: 0, y: 0, z: 0};
+        this.rotation = 0;
         this.canJump = true;
         this.isGrounded = true;
 
@@ -104,8 +105,14 @@ export class Player {
 
         // Movement Logic
         let xInput = 0;
-        if (this.input.left) xInput--;
-        if (this.input.right) xInput++;
+        if (this.input.left) {
+            xInput--;
+            this.rotation--;
+        };
+        if (this.input.right) {
+            xInput++;
+            this.rotation++;
+        };
 
         let zInput = 0;
         if (this.input.forward) zInput--;
@@ -151,6 +158,7 @@ export class Player {
                 y: Math.round(position.y * 100) / 100,
                 z: Math.round(position.z * 100) / 100
             },
+            rotation: this.rotation,
             team: this.team,
             kills: this.kills,
             deaths: this.deaths,
