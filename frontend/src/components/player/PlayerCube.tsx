@@ -10,8 +10,10 @@ interface PlayerProps {
     isDead?: boolean;
 }
 
-export const PlayerCube = forwardRef<Mesh, PlayerProps>(
-    ({ position, rotation, isLocalPlayer = false, team = 'red', isDead = false }, ref) => {
+export const PlayerCube = forwardRef<Mesh, PlayerProps>((
+    { position, rotation, isLocalPlayer = false, team = 'red', isDead = false }, 
+    ref
+) => {
         const internalRef = useRef<Mesh>(null);
         const lerpTarget = useRef(new Vector3());
         const rotationTarget = useRef(0);

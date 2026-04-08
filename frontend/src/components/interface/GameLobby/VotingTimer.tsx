@@ -1,5 +1,4 @@
 import { useVotingTimer } from "../../../contexts/VotingContext";
-
 import "../../../styles/lobby.css"
 
 const VotingTimer = () => {
