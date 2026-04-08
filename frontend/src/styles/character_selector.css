@@ -85,12 +85,15 @@
 }
 .cucumber_icon{
     background-image: url("../../public/cucumber.png");
+    background-color: green;
 }
 .potato_icon{
     background-image: url("../../public/potato.png");
+    background-color: peachpuff;
 }
 .tomato_icon{
     background-image: url("../../public/tomato.png");
+    background-color: red;
 }
 
 @media screen and (max-width: 1200px) {
