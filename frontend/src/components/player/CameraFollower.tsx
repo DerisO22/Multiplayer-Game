@@ -18,8 +18,8 @@ export function CameraFollower({ targetRef, rotationY = 0 }: CameraFollowerProps
             const distance = 8;
             const height = 3.5;
             
-            const offsetX = Math.sin(rotationY / 10) * distance;
-            const offsetZ = Math.cos(rotationY / 10) * distance;
+            const offsetX = Math.sin(rotationY) * distance;
+            const offsetZ = Math.cos(rotationY) * distance;
             
             cameraTarget.current.set(
                 x + offsetX,

@@ -104,29 +104,24 @@ export class Player {
         const adjustedMovespeed = this.movementModifiers.getAdjustedMovespeed();
 
         // Movement Logic
-        let xInput = 0;
-        if (this.input.left) {
-            xInput--;
-            this.rotation--;
-        };
-        if (this.input.right) {
-            xInput++;
-            this.rotation++;
-        };
+        if (this.input.left) this.rotation += 0.06;
+        if (this.input.right) this.rotation -= 0.06;
 
+        // Movement only from forward/backward
         let zInput = 0;
-        if (this.input.forward) zInput--;
-        if (this.input.backward) zInput++;
+        if (this.input.forward) zInput = -1;
+        if (this.input.backward) zInput = 1;
 
+        const speed = adjustedMovespeed.x * 4;
         const currentVel = this.body.linvel();
-        this.body.setLinvel(
-            { 
-                x: xInput * adjustedMovespeed.x * 5, 
-                y: currentVel.y, 
-                z: zInput * adjustedMovespeed.z * 5 
-            },
-            true
-        );
+
+        if (zInput !== 0) {
+            const velX = Math.sin(this.rotation) * speed * zInput;
+            const velZ = Math.cos(this.rotation) * speed * zInput;
+            this.body.setLinvel({ x: velX, y: currentVel.y, z: velZ }, true);
+        } else {
+            this.body.setLinvel({ x: currentVel.x * 0.8, y: currentVel.y, z: currentVel.z * 0.8 }, true);
+        }
 
         /**
          * Jumping Logic

@@ -24,16 +24,14 @@ export const PlayerCube = forwardRef<Mesh, PlayerProps>(
                 lerpTarget.current.set(position.x, position.y, position.z);
                 meshRef.current.position.lerp(lerpTarget.current, 0.2);
 
-                // Only apply rotation if provided (local player only)
-                if (rotation !== undefined) {
-                    rotationTarget.current = rotation;
-                    currentRotation.current = MathUtils.lerp(
-                        currentRotation.current,
-                        rotationTarget.current,
-                        0.1
-                    );
-                    meshRef.current.rotation.y = currentRotation.current;
-                }
+                rotationTarget.current = rotation ?? 0;
+                currentRotation.current = MathUtils.lerp(
+                    currentRotation.current,
+                    rotationTarget.current,
+                    0.1
+                );
+                meshRef.current.rotation.y = currentRotation.current;
+            
             }
         });
 
