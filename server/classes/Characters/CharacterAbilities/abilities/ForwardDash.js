@@ -4,7 +4,7 @@ export class ForwardDash extends Ability {
     constructor() {
         super("forward_dash", 8000);
         this.duration = 0;
-        this.launchForce = -50.0;
+        this.launchForce = -200.0;
         this.damageAmount = 25;
         this.dashRange = 10; 
     }
