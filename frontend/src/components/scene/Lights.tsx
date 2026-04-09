@@ -1,4 +1,8 @@
+import { useLightMode } from "../../contexts/game/LightContext";
+
 const Lights = () => {
+    const { lightMode } = useLightMode();
+    
     return (
         <>
             <ambientLight

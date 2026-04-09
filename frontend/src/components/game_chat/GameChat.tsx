@@ -5,12 +5,14 @@ import GameChatInput from "./GameChatInput";
 import { useSocket } from "../../contexts/useSocket";
 import GameChatToggle from "./GameChatToggle";
 import { useCurrentGameState } from "../../contexts/CurrentGameState";
+import { useLightMode } from "../../contexts/game/LightContext";
 
 const GameChat = () => {
     const { socket } = useSocket();
     const currentGameState = useCurrentGameState();
     const chatPayload = usePlayerChat(socket);
     const [ isVisible, setIsVisible ] = useState<boolean>(true);
+    const { lightMode, toggle_light_mode } = useLightMode();
 
     const formatDate = (time: number) => {
         const timeObject = new Date(time);
@@ -68,6 +70,8 @@ const GameChat = () => {
             { currentGameState !== "VOTING" && currentGameState !== "WAITING" && (
                 <GameChatToggle handle_toggle={handle_toggle} isVisible={isVisible}/>
             )}
+
+            <button onClick={toggle_light_mode}>Current Light Mode: {lightMode}</button>
         </>
     );
 }
