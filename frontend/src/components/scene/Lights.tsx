@@ -1,4 +1,7 @@
+import { useRef } from "react";
 import { useLightMode } from "../../contexts/game/LightContext";
+import { useHelper } from "@react-three/drei";
+import { DirectionalLightHelper } from "three";
 
 export const LightConfigs = {
     mode0: {
@@ -23,8 +26,11 @@ export const LightConfigs = {
 
 const Lights = () => {
     const { lightMode } = useLightMode();
+    const directionalLightRef = useRef(null);
 
     const config = LightConfigs[`mode${lightMode}`] || LightConfigs.mode0;
+
+    useHelper(directionalLightRef, DirectionalLightHelper, 5, 'red')
     
     return (
         <>
@@ -34,16 +40,16 @@ const Lights = () => {
             
             {/* Fill light for daytime */}
             <directionalLight 
-                position={[0, 30, -200]}
+                ref={directionalLightRef}
+                position={[0, 10, -30]}
                 castShadow={config.castShadow}
                 intensity={config.direction_light_intensity || 0} 
-                shadow-camera-left={-20}  
-                shadow-camera-right={20}
-                shadow-camera-top={20}
-                shadow-camera-bottom={-20}
-                shadow-camera-far={500}    
-                shadow-mapSize={[2048, 2048]} 
-                shadow-bias={0.001}
+                shadow-camera-left={-100}  
+                shadow-camera-right={100}
+                shadow-camera-top={100}
+                shadow-camera-bottom={-100}
+                shadow-camera-far={300}    
+                shadow-mapSize={[2048, 2048]}
             />
 
             <pointLight castShadow={config.castShadow} position={[-20, 100, -20]} intensity={config.point_light_intensity || 0}/>

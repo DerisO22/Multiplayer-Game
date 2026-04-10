@@ -13,7 +13,7 @@ const Lobby = () => {
     const { total_players } = useLobby();
     const currentGameState = useCurrentGameState();
     const [ isPlayerListVisible, setIsPlayerListVisible ] = useState<boolean>(false);
-    const { isVotingVisible, toggleVotingVisibility } = useVoting();
+    const { isVotingVisible, toggleVotingVisibility, hasVotingStarted, hasVotingEnded } = useVoting();
 
     useEffect(() => {
         scroll_reveal.reveal('.logo_container', { origin: "left" });
@@ -58,7 +58,7 @@ const Lobby = () => {
                             </div>
 
                             <div className="option_button_container">
-                                <button onClick={toggleVotingVisibility} className="lobby_option_button">
+                                <button disabled={(hasVotingStarted && !hasVotingEnded) ? false : true} onClick={toggleVotingVisibility} className="lobby_option_button">
                                     <div className="vote_icon"></div>
                                     <span>VOTE</span>
                                 </button>
