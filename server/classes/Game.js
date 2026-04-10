@@ -17,10 +17,12 @@ export class Game {
         this.players = {};
         this.world = null;
         this.pending_sockets = {}; 
+
         this.GameState = new GameState(io);
         this.GameState.sendCurrentGameState();
         this.TeamManager = new TeamManager(4);
         this.Lobby = new Lobby(io);
+
         this.is_game_running = false;
         this.teamInfoCounter = 0;
 
@@ -491,7 +493,8 @@ export class Game {
     // help for updating lobby info
     broadcastLobbyInfo() {
         const pendingPlayerCount = Object.keys(this.pending_sockets).length;
-        const totalPlayerCount = Object.keys(this.io.sockets.sockets).length;
+        const gamePlayerCount = Object.keys(this.players).length;
+        const totalPlayerCount = pendingPlayerCount + gamePlayerCount;
 
         this.io.sockets.emit("lobby_info", { 
             total_players: totalPlayerCount, 
