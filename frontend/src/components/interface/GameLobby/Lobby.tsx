@@ -10,7 +10,7 @@ import { useCurrentGameState } from "../../../contexts/CurrentGameState";
 import { useVoting } from "../../../contexts/VotingContext";
 
 const Lobby = () => {
-    const { total_players } = useLobby();
+    const { pending_player_ids } = useLobby();
     const currentGameState = useCurrentGameState();
     const [ isPlayerListVisible, setIsPlayerListVisible ] = useState<boolean>(false);
     const { isVotingVisible, toggleVotingVisibility, hasVotingStarted, hasVotingEnded } = useVoting();
@@ -67,7 +67,7 @@ const Lobby = () => {
 
                         {/* Extra Pre-Game Info */}
                         <div className="extra_lobby_info">
-                            <div className="info_text">Players Waiting: <span className="highlight_text">{total_players}</span></div>
+                            <div className="info_text">Players Waiting: <span className="highlight_text">{pending_player_ids?.length}</span></div>
                             <div className="info_text">Players Needed To Start: <span className="highlight_text">5</span></div>
                         </div>
                     </div>
