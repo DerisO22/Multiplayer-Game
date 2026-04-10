@@ -4,7 +4,7 @@ import '../../../styles/character_selector.css';
 import { scroll_reveal } from "../../../utils/consts/ScrollReveal";
 
 const CharacterSelector = () => {
-    const { characterData, selectedCharacter, setSelectedCharacter, handleCharacterSelection } = useCharacterSelect();
+    const { characterData, selectedCharacter, handleCharacterSelection } = useCharacterSelect();
     const [ isSelectorVisible, setIsSelectorVisible ] = useState<boolean>(false);
 
     useLayoutEffect(() => {
