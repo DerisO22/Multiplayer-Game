@@ -27,7 +27,6 @@ export const GameProvider = ({ children }: GameProviderProps) => {
         if(!socket) return;
 
         const handleState = (state: GameState) => {
-            console.log(state.teamInfo)
             setGameState(state);
         }
 
