@@ -1,7 +1,7 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useLightMode } from "../../contexts/game/LightContext";
 import { useHelper } from "@react-three/drei";
-import { DirectionalLightHelper } from "three";
+import { DirectionalLightHelper, Object3D } from "three";
 
 export interface LightConfigsType {
     [key: string]: {
@@ -20,7 +20,7 @@ export const LightConfigs: LightConfigsType = {
         castShadow: false
     },
     mode1: {
-        ambient_light_intensity: 0.4,
+        ambient_light_intensity: 0.3,
         direction_light_intensity: 1.5,
         point_light_intensity: 0,
         castShadow: true
@@ -36,6 +36,9 @@ export const LightConfigs: LightConfigsType = {
 const Lights = () => {
     const { lightMode } = useLightMode();
     const directionalLightRef = useRef(null);
+    const [targetObject] = useState(() => new Object3D());
+
+    targetObject.position.set(-14, -5, 22);
 
     const config = LightConfigs[`mode${lightMode}`] || LightConfigs.mode0;
 
@@ -46,19 +49,27 @@ const Lights = () => {
             <ambientLight
                 intensity={config.ambient_light_intensity}
             />
+
+            <primitive object={targetObject} />
             
             {/* Fill light for daytime */}
             <directionalLight 
                 ref={directionalLightRef}
-                position={[0, 10, -30]}
+                position={[-14, 20, -30]}  
+                target={targetObject}
                 castShadow={config.castShadow}
-                intensity={config.direction_light_intensity || 0} 
+                intensity={config.direction_light_intensity || 0}
+                
+                shadow-mapSize={[4096, 4096]}
+                shadow-bias={-0.0000001}
+                shadow-normalBias={.0001}
+                
                 shadow-camera-left={-100}  
                 shadow-camera-right={100}
                 shadow-camera-top={100}
                 shadow-camera-bottom={-100}
-                shadow-camera-far={300}    
-                shadow-mapSize={[2048, 2048]}
+                shadow-camera-far={400}
+                shadow-camera-near={1}
             />
 
             <pointLight castShadow={config.castShadow} position={[-20, 100, -20]} intensity={config.point_light_intensity || 0}/>

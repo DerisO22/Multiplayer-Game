@@ -21,6 +21,7 @@ import EndGame from './components/interface/EndGame';
 import { useLobby } from './contexts/LobbyContext';
 import { useCurrentGameState } from './contexts/CurrentGameState';
 import { useLightMode } from './contexts/game/LightContext';
+import { PCFShadowMap } from 'three';
 
 const Game = () => {
     const { socket, isConnected } = useSocket();
@@ -58,8 +59,8 @@ const Game = () => {
         <div style={{ width: '100vw', height: '100vh' }}>
             <Canvas 
                 camera={{ position: [1000, 100, 100], fov: 75 }} 
-                shadows 
-                gl={{ antialias: true, powerPreference: "default"}}
+                shadows
+                gl={{ antialias: true, powerPreference: "default" }}
                 dpr={[1, 2]}
             >
                 {/* Skybox */}

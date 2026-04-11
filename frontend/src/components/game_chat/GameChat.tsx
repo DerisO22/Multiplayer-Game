@@ -5,7 +5,6 @@ import GameChatInput from "./GameChatInput";
 import { useSocket } from "../../contexts/useSocket";
 import GameChatToggle from "./GameChatToggle";
 import { useCurrentGameState } from "../../contexts/CurrentGameState";
-import { useLightMode } from "../../contexts/game/LightContext";
 
 const GameChat = () => {
     const { socket } = useSocket();
