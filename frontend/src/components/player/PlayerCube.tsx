@@ -1,7 +1,8 @@
 import { useFrame } from '@react-three/fiber';
 import { forwardRef, useRef } from 'react';
-import { Mesh, Vector3 } from 'three';
-
+//import { Mesh, Vector3 } from 'three';
+import { Group, Vector3 } from 'three'; 
+import { useGLTF } from '@react-three/drei';
 interface PlayerProps {
     position: { x: number; y: number; z: number };
     isLocalPlayer?: boolean;
@@ -9,13 +10,14 @@ interface PlayerProps {
     isDead?: boolean;
 }
 
-export const PlayerCube = forwardRef<Mesh, PlayerProps>(
+export const PlayerCube = forwardRef<Group, PlayerProps>(
     ({ position, isLocalPlayer = false, team = 'red', isDead = false }, ref) => {
-        const internalRef = useRef<Mesh>(null);
+         const { scene, nodes, materials } = useGLTF('/tomato.glb');
+        const internalRef = useRef<Group>(null);
         const lerpTarget = useRef(new Vector3());
 
         // Use the forwarded ref for local player, internal ref for remote players
-        const meshRef = (ref && 'current' in ref ? ref : internalRef) as React.RefObject<Mesh>;
+        const meshRef = (ref && 'current' in ref ? ref : internalRef) as React.RefObject<Group>;
 
         useFrame((_, delta) => {
             if (meshRef.current) {
@@ -43,15 +45,33 @@ export const PlayerCube = forwardRef<Mesh, PlayerProps>(
         const playerColor = getPlayerColor();
 
         return (
-            <mesh ref={meshRef}>
-                <capsuleGeometry args={[0.5, 1, 4, 8]} />
-                <meshStandardMaterial 
-                    color={playerColor}
-                    emissive={isLocalPlayer ? 0xffff00 : undefined}
-                    emissiveIntensity={isLocalPlayer ? 0.3 : 0}
+            // <mesh ref={meshRef}>
+            //  <group ref={meshRef as any}>
+            //     <primitive object={scene} /> 
+            //     <capsuleGeometry args={[0.5, 1, 4, 8]} />
+            //     <meshStandardMaterial 
+            //         color={playerColor}
+            //         emissive={isLocalPlayer ? 0xffff00 : undefined}
+            //         emissiveIntensity={isLocalPlayer ? 0.3 : 0}
+                    
+            
+            // </mesh>
+            // </group>
+             <group ref={meshRef}>
+                {/* This replaces your old <mesh> and <capsuleGeometry> */}
+                <primitive 
+                    object={scene} 
+                    scale={0.5} // Adjust scale as needed
                 />
-            </mesh>
+                
+                {/* OPTIONAL: If you want to force the team color onto the carrot's material */}
+                <meshStandardMaterial 
+                    attach="material" 
+                    color={playerColor} 
+                />
+            </group>
         );
+
     }
 );
 

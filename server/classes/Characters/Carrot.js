@@ -9,7 +9,6 @@ export class Carrot extends Player {
         super(game, socket, { x: 1.3, y: 1.3, z: 1.3 });
 
         this.character = "carrot";
-        this.characterModel = "frontend/public/carrot.glb";
         //this.characterColor = 0xff9800;
 
         this.abilitySystem = new AbilitySystem(this);

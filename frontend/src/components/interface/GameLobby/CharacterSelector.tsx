@@ -22,10 +22,8 @@ const CharacterSelector = () => {
                 <div className="character_underline"/>
                 <div className="info_text">Current Class: {selectedCharacter}</div>
                 <button className="choose_player_button" onClick={() => setIsSelectorVisible(prev => !prev)}>
-                    <div className="carrot_icon"></div>
-                    <div className= "cucumber_icon"></div>
-                    <div className= "potato_icon"></div>
-                    <div className= "tomato_icon"></div>
+                    <div className={`${selectedCharacter}_icon`}></div>
+                
                     <span>Choose Player</span>
                 </button>
             </div>
