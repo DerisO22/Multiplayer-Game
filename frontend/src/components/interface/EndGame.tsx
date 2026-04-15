@@ -1,10 +1,36 @@
+import { useEffect } from "react";
 import { useCurrentGameState } from "../../contexts/CurrentGameState";
 import { useTeam } from "../../contexts/TeamContext";
 import '../../styles/end_game.css';
+import { useUser } from "@clerk/clerk-react";
+import { useGameState } from "../../contexts/useGameState";
+import { savePlayerStats } from "../../services/playerService";
+import { useSocket } from "../../contexts/useSocket";
 
 const EndGame = () => {
     const currentGameState = useCurrentGameState();
     const { redTeam, blueTeam, redScore, blueScore } = useTeam();
+    const { user } = useUser();
+    const { socket } = useSocket();
+    const gameState = useGameState();
+
+    useEffect(() => {
+        if (currentGameState === "ENDED" && user?.id) {
+            const localPlayer = gameState.players.find(p => p.id === socket?.id);
+
+            const player_data = {
+                player_kills: localPlayer?.kills,
+                player_deaths: localPlayer?.deaths,
+                player_team: localPlayer?.team,
+                red_score: gameState.teamScores.red,
+                blue_score: gameState.teamScores.blue
+            }
+            
+            if (localPlayer && player_data) {
+                savePlayerStats(user.id, player_data)
+            }
+        }
+    }, [currentGameState, gameState, user, socket, redScore, blueScore]);
 
     if(currentGameState !== "ENDED") return;
 
