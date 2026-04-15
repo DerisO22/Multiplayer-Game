@@ -30,7 +30,7 @@ const EndGame = () => {
                 savePlayerStats(user.id, player_data)
             }
         }
-    }, [currentGameState, gameState, user, socket, redScore, blueScore]);
+    }, [currentGameState]);
 
     if(currentGameState !== "ENDED") return;
 
