@@ -45,7 +45,7 @@ const SettingsMenu = ({ toggleSettings } : SettingsMenuProps) => {
         if(!user?.id) return;
 
         /**
-         * Set initial values of the saved stats from db
+         * Set initial values of the saved sound vals from db
          */
         setSoundValues(playerData?.player_sounds ?? DEFAULT_SOUND_VALUES);
     }, [])
