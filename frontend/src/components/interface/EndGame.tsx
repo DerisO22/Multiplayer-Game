@@ -85,7 +85,7 @@ const EndGame = () => {
                                 <span className="leaderboard_header blue_team">K/D</span>
                             </div>
                             {blueTeam.map((player, index) => (
-                                <div className="player_entry blue_roster" key={player.nickname}>
+                                <div className="player_entry blue_roster" key={player.nickname + index}>
                                     <div className="player_info">{player.nickname.substring(0, 4)}</div>
                                     <div className="player_info">{player.kills}</div>
                                     <div className="player_info">{player.deaths}</div>

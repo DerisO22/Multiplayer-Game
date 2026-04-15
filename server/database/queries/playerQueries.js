@@ -50,17 +50,17 @@ export const playerQueries = {
     
     // Player Clans
     CREATE_PLAYER_GUILD:
-    ``,
+        ``,
 
     ADD_PLAYER_TO_GUILD: 
-    ``,
+        ``,
 
     GET_ALL_GUILD_INFORMATION:
-    ``,
+        ``,
 
     REMOVE_GUILD:
-    ``,
+        ``,
 
     REMOVE_PLAYER_FROM_GUILD:
-    ``,
+        ``,
 }
