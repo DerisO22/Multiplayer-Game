@@ -67,8 +67,8 @@ const Lobby = () => {
 
                         {/* Extra Pre-Game Info */}
                         <div className="extra_lobby_info">
-                            <div className="info_text">Players Waiting: <span className="highlight_text">{pending_player_ids?.length}</span></div>
-                            <div className="info_text">Players Needed To Start: <span className="highlight_text">5</span></div>
+                            <div className="info_text"><span className="highlight_text">{pending_player_ids?.length ? `Pending Players: ${pending_player_ids.length}` : "Game Ongoing"}</span></div>
+                            <div className="info_text"><span className="highlight_text">Players Needed To Start: 8</span></div>
                         </div>
                     </div>
 
