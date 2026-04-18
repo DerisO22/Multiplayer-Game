@@ -1,7 +1,9 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { io, type Socket } from "socket.io-client";
 
-const SERVER_URL = 'http://localhost:3001';
+const SERVER_URL = (import.meta.env.VITE_NODE_ENVIRONMENT === "production") ? 
+import.meta.env.VITE_PROD_URL :
+import.meta.env.VITE_DEV_URL;;
 
 interface SocketProviderProps {
     children: ReactNode;
