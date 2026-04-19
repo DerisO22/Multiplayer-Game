@@ -32,7 +32,7 @@
 
 .notify {
     padding: 1rem;
-    font-size: 2.2rem;
+    font-size: 1.8rem;
 }
 
 .login_container {
@@ -42,4 +42,8 @@
     
     display: flex;
     justify-content: center;
+}
+
+.login_logo_image {
+    width: 15rem;
 }

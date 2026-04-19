@@ -2,8 +2,10 @@ import { Fragment, useLayoutEffect, useState } from "react";
 import { useCharacterSelect } from "../../../contexts/CharacterSelectionContext";
 import '../../../styles/character_selector.css';
 import { scroll_reveal } from "../../../utils/consts/ScrollReveal";
+import { useLobby } from "../../../contexts/LobbyContext";
 
 const CharacterSelector = () => {
+    const { pending_player_ids } = useLobby();
     const { characterData, selectedCharacter, handleCharacterSelection } = useCharacterSelect();
     const [ isSelectorVisible, setIsSelectorVisible ] = useState<boolean>(false);
 
@@ -27,7 +29,7 @@ const CharacterSelector = () => {
                 </button>
             </div>
 
-            {isSelectorVisible && characterData && (
+            {isSelectorVisible && characterData && pending_player_ids && (
                 <div className="selector_container">
                     <h1 className="header1">Veggie Selector</h1>
 

@@ -12,7 +12,7 @@ function App() {
 
                     <div className='login_info'>
                         <div className="login_logo_container">
-                            <img className="logo_image" src="/game_logo.webp"></img>
+                            <img className="login_logo_image" src="/game_logo.webp"></img>
                         </div>
 
                         <h2 className='notify'>Looks Like You're Not Signed In!</h2>

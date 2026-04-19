@@ -49,14 +49,7 @@ const Lobby = () => {
 
                     {/* Main Lobby Buttons */}
                     <div className="lobby_info_container">
-                        <div className="options_menu">
-                            <div className="option_button_container">
-                                <button className="lobby_option_button">
-                                    <div className="play_icon"></div>
-                                    <span>PLAY</span>
-                                </button>
-                            </div>
-                            
+                        <div className="options_menu">                
                             <div className="option_button_container">
                                 <button onClick={toggleLobbyList} className="lobby_option_button">
                                     <div className="player_list_icon"></div>
@@ -74,8 +67,8 @@ const Lobby = () => {
 
                         {/* Extra Pre-Game Info */}
                         <div className="extra_lobby_info">
-                            <div className="info_text">Players Waiting: <span className="highlight_text">{pending_player_ids?.length}</span></div>
-                            <div className="info_text">Players Needed To Start: <span className="highlight_text">5</span></div>
+                            <div className="info_text"><span className="highlight_text">{pending_player_ids?.length ? `Pending Players: ${pending_player_ids.length}` : "Game Ongoing"}</span></div>
+                            <div className="info_text"><span className="highlight_text">Players Needed To Start: 8</span></div>
                         </div>
                     </div>
 

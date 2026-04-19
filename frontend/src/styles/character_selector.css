@@ -124,7 +124,7 @@
     z-index: 105;
     background-color: rgba(0, 0, 0, 0.901);
     visibility: hidden;
-    overflow: none;
+    overflow-y: auto;
 }
 
 .exit_selector_button {

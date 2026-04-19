@@ -10,9 +10,13 @@ export class GameState {
         this.gameState = "WAITING";
         this.teamScores = { red: 0, blue: 0 };
 
-        // 20 seconds for game
+        // 20 second countdown before voting starts
+        this.lobbyCountdownDuration = 20000;
+        this.lobbyCountdownStartTime = null;
+
+        // 6 minutes for game
         this.gameStartTime = null;
-        this.gameDuration = 120000;
+        this.gameDuration = 300000;
 
         // 20 secs to view leaderboard and stats
         this.endGameStartTime = null;
@@ -21,10 +25,6 @@ export class GameState {
         // 30 second voting time
         // this.votingDuration = 3000000;
         // this.votingStartTime = null;
-
-        // 5 second countdown before voting starts
-        this.lobbyCountdownDuration = 5000;
-        this.lobbyCountdownStartTime = null;
 
         this.teams = { red: [], blue: [] };
         this.activeTimers = [];
