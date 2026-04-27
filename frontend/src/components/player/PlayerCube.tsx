@@ -8,12 +8,13 @@ interface PlayerProps {
     position: { x: number; y: number; z: number };
     rotation?: number; 
     characterType: string,
-    localPlayerNickname: string,
-    localPlayerTeam: 'red' | 'blue'
+    playerNickname: string,
+    playerTeam: 'red' | 'blue',
+    playerHealth: number,
 }
 
 export const PlayerCube = forwardRef<Group, PlayerProps>((
-    { position, rotation, characterType = "carrot", localPlayerNickname, localPlayerTeam }, 
+    { position, rotation, characterType = "carrot", playerNickname, playerTeam, playerHealth }, 
     ref
 ) => {
     const internalRef = useRef<Group>(null);
@@ -56,14 +57,23 @@ export const PlayerCube = forwardRef<Group, PlayerProps>((
                         rotation={[0, Math.PI, 0]}
                         font={"/Inter_Bold.json"}
                     >
-                        {localPlayerNickname}
+                        {playerNickname}
                         <meshStandardMaterial 
-                            color={localPlayerTeam === 'red' ? '#ff4757' : '#2e86de'} 
-                            emissive={localPlayerTeam === 'red' ? '#ff4757' : '#2e86de'}
+                            color={playerTeam === 'red' ? '#ff4757' : '#2e86de'} 
+                            emissive={playerTeam === 'red' ? '#ff4757' : '#2e86de'}
                             emissiveIntensity={0.8}
                         />
                     </Text3D>
                 </Center>
+
+                <mesh position={[0, -0.1, 0]}>
+                    <boxGeometry args={[playerHealth / 50, 0.1, 0.2]} />
+                    <meshStandardMaterial 
+                        color={"green"} 
+                        emissive={"green"}
+                        emissiveIntensity={0.8}
+                    />
+                </mesh>
             </group>
         </group>
     );
