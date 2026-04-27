@@ -74,13 +74,12 @@ export class DamageSystem {
             });
         }
 
-        // Record death for victim
         this.player.deaths++;
 
         // Respawn player after 3 seconds
         setTimeout(() => {
             this.respawn();
-        }, 3000);
+        }, 2000);
     }
 
     /**

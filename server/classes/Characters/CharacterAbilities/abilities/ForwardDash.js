@@ -57,7 +57,7 @@ export class ForwardDash extends Ability {
             
             console.log(`Checking ${otherPlayer.nickname}: distance=${distance.toFixed(2)}, dot=${dotProduct.toFixed(2)}, inRange=${distance < this.dashRange}, inFront=${dotProduct > 0}`);
     
-            if (distance < this.dashRange && dotProduct > 0) {
+            if (distance < this.dashRange && dotProduct > 0 && (otherPlayer.team !== player.team)) {
                 otherPlayer.takeDamage(this.damageAmount, player);
                 console.log(`HIT!`);
             }
