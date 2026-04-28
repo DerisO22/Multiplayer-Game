@@ -102,7 +102,6 @@ export class DamageSystem {
      * Get spawn point for player's team
      */
     getTeamSpawnPoint() {
-        // Red team spawns on one side, blue on the other
         if (this.player.team === "red") {
             return { x: -20 + Math.floor((Math.random() - 0.5) * 3), y: 30, z: 0 + + Math.floor((Math.random() - 0.5) * 3)};
         } else {
