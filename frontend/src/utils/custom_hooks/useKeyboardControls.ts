@@ -35,26 +35,28 @@ export const useKeyboardControls = () => {
                 /**
                  * All button presses to server
                  */
+                // could probably be turned into a switch
                 if (key === playerKeybinds.forward) {
-    socket.emit('setButton', { button: 'forward', value: true });
-    playSounds('walk');
-}
-if (key === playerKeybinds.backward) {
-    socket.emit('setButton', { button: 'backward', value: true });
-    playSounds('walk');
-}
-if (key === playerKeybinds.left) {
-    socket.emit('setButton', { button: 'left', value: true });
-    playSounds('walk');
-}
-if (key === playerKeybinds.right) {
-    socket.emit('setButton', { button: 'right', value: true });
-    playSounds('walk');
-}
-if (key === playerKeybinds.jump) {
-    socket.emit('setButton', { button: 'jump', value: true });
-    playSounds('jump');
-}
+                    socket.emit('setButton', { button: 'forward', value: true });
+                    playSounds('walk');
+                }
+                if (key === playerKeybinds.backward) {
+                    socket.emit('setButton', { button: 'backward', value: true });
+                    playSounds('walk');
+                }
+                if (key === playerKeybinds.left) {
+                    socket.emit('setButton', { button: 'left', value: true });
+                    playSounds('walk');
+                }
+                if (key === playerKeybinds.right) {
+                    socket.emit('setButton', { button: 'right', value: true });
+                    playSounds('walk');
+                }
+                if (key === playerKeybinds.jump) {
+                    socket.emit('setButton', { button: 'jump', value: true });
+                    playSounds('jump');
+                }
+
                 // Abilities Key Mappings
                 if (key === playerKeybinds.ability1) {
                     const abilityName = characterAbilities.ability1; 

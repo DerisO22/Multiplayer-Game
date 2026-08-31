@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   frontend:
     image: node:lts-alpine
@@ -20,27 +18,33 @@ services:
     ports:
       - "3001:3001"
     environment:
-      - NODE_ENV:development
-      - DATABASE_URL=postgres://example-database-user:HmxWFa4EgEYJnjs7ABdLRELS4fpv86vL@example-database:5432/example-database
+      - NODE_ENV=development
+      - DATABASE_URL=postgres://veggie-user:HmxWFa4EgEYJnjs7ABdLRELS4fpv86vL@veggie-database:5432/veggie-db
       - CORS_URL=http://localhost:5173
     depends_on:
-      - example-database
+      veggie-database:
+        condition: service_healthy
     command: sh -c "npm install && node server.js"
 
-  example-database:
-    container_name: example-database
-    environment:
-      - POSTGRES_USER=example-database-user
-      - POSTGRES_PASSWORD=HmxWFa4EgEYJnjs7ABdLRELS4fpv86vL
-      - POSTGRES_DB=example-database
+  veggie-database:
+    container_name: veggie-database
     image: postgres:13-alpine
     ports:
       - "5433:5432"
+    environment:
+      - POSTGRES_USER=veggie-user
+      - POSTGRES_PASSWORD=HmxWFa4EgEYJnjs7ABdLRELS4fpv86vL
+      - POSTGRES_DB=veggie-db
     volumes:
-      - example-database-data:/var/lib/postgresql/data
+      - veggie-database-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U veggie-user -d veggie-db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
-  example-database-viewer:
-    container_name: example-database-viewer
+  veggie-database-viewer:
+    container_name: veggie-database-viewer
     image: dpage/pgadmin4
     ports:
       - "54320:80"
@@ -49,5 +53,5 @@ services:
       - PGADMIN_DEFAULT_PASSWORD=g3KyPSr26tgKmyWbGb4MrSmGm5c5rg8T
 
 volumes:
-  example-database-data:
-    name: example-database-data
+  veggie-database-data:
+    name: veggie-database-data
